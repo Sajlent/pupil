@@ -1,0 +1,21 @@
+.input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border: 1px solid $color-grey;
+  border-radius: 0.25rem;
+
+  &:hover {
+    border-color: black;
+  }
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  color: $color-dark-grey;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

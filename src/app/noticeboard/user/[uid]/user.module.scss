@@ -1,0 +1,42 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 4rem;
+  padding-top: 4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid $color-grey;
+  border-radius: 1rem;
+}
+
+.details {
+  &__heading {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+
+  &__content {
+    margin: 0.5rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+  }
+}

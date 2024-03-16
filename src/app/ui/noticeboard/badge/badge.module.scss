@@ -1,0 +1,17 @@
+.badge {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid $color-teal;
+  border-radius: 0.5rem;
+  background-color: rgba($color: $color-teal, $alpha: 0.1);
+
+  &__label {
+    font-size: 0.875rem;
+    color: $color-dark-teal;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 0.75rem;
+  }
+}

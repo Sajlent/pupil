@@ -1,0 +1,36 @@
+.nav {
+  border-bottom: 1px solid;
+
+  &__list {
+    display: flex;
+    justify-content: flex-end;
+    max-width: 1630px;
+    list-style: none;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  &__item {
+    padding: 1rem;
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 1px solid;
+
+  &__displayName {
+    display: block;
+    font-size: 0.875rem;
+    margin: 0 2rem;
+  }
+
+  &__type {
+    display: block;
+    font-size: 0.75rem;
+  }
+}

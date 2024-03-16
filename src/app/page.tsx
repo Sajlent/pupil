@@ -1,94 +1,77 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useFormState } from 'react-dom';
+import { useForm } from 'react-hook-form';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { authenticate } from '@/app/lib/actions';
+
+import Input from '@/app/ui/forms/input/input';
+import Button from '@/app/ui/forms/button/button';
+
+import { ButtonTypes } from '@/app/types/Forms';
+
+import styles from './page.module.scss';
+
+const initialState = {
+  isLoggedIn: false,
+  message: '',
+};
 
 export default function Home() {
+  const { register } = useForm();
+  const [state, formAction] = useFormState(authenticate, initialState);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    <main className={styles.root}>
+      <div className={styles.container}>
+        <Image src="/images/cat.jpg" width={128} height={128} alt="Cat" />
+        <h1 className={styles.heading}>The best petsitter app!</h1>
+        {state.isLoggedIn ? (
+          <>
+            <p>{state.message}</p>
+            <p>
+              Przejdź do <Link href={'/noticeboard'}>Strony głównej</Link>
+            </p>
+          </>
+        ) : (
+          <form action={formAction} className={styles.form}>
+            <fieldset>
+              <legend className={styles.form__legend}>Logowanie</legend>
+              <Input
+                id="email"
+                label="E-mail"
+                name="email"
+                type="email"
+                required
+                register={register}
+              />
+              <Input
+                id="password"
+                label="Hasło"
+                name="password"
+                type="password"
+                required
+                register={register}
+              />
+            </fieldset>
+            <Button
+              type={ButtonTypes.SUBMIT}
+              label="Zaloguj się"
+              title="Zaloguj się"
             />
-          </a>
-        </div>
-      </div>
+            <p aria-live="polite" role="status">
+              {state?.message}
+            </p>
+          </form>
+        )}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        <p>
+          Nie masz konta?
+          <br />
+          <Link href={'/auth'}>Zarejestruj się!</Link>
+        </p>
       </div>
     </main>
   );
