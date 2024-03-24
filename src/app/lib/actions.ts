@@ -14,6 +14,15 @@ const userRegistrationSchema = {
   type: '',
 };
 
+const userProfileSchema = {
+  firstname: '',
+  lastname: '',
+  displayName: '',
+  animals: [],
+  description: '',
+  skills: '',
+};
+
 export async function registerUser(prevState: any, formData: FormData) {
   try {
     // get data filled in registration form
@@ -21,8 +30,6 @@ export async function registerUser(prevState: any, formData: FormData) {
       // @ts-ignore
       userRegistrationSchema[field] = formData.get(field);
     }
-
-    console.log('userRegistrationSchema', userRegistrationSchema);
 
     // validate if obligatory fields has values
     // TODO: Better validation, e.g. password length
@@ -66,6 +73,7 @@ export async function registerUser(prevState: any, formData: FormData) {
 
 export async function authenticate(prevState: any, formData: FormData) {
   const state = { isLoggedIn: false, message: '' };
+
   try {
     // get data filled in login form
     const email = formData.get('email') as string;
@@ -114,9 +122,34 @@ export async function getUser(uid: string) {
     if (userSnap.exists()) {
       const data = userSnap.data();
 
-      return { ...data };
+      return data;
     }
   } catch (error) {
     // display error component
   }
+}
+
+export async function updateUserProfile(
+  uid: string,
+  prevState: any,
+  formData: FormData
+) {
+  for (let field in userProfileSchema) {
+    // @ts-ignore
+    if (Array.isArray(userProfileSchema[field])) {
+      // @ts-ignore
+      userProfileSchema[field] = formData.getAll(field);
+    } else {
+      // @ts-ignore
+      userProfileSchema[field] = formData.get(field);
+    }
+  }
+
+  try {
+    const usersRef = doc(db, 'users', uid);
+
+    setDoc(usersRef, userProfileSchema, { merge: true });
+  } catch {}
+
+  return {};
 }

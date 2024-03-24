@@ -1,0 +1,25 @@
+.select {
+  display: block;
+  width: 100%;
+  border: 1px solid $color-grey;
+  border-radius: 0.25rem;
+
+  &--multiple {
+    max-width: 300px;
+    min-height: 100px;
+    font-size: 0.875rem;
+  }
+}
+
+.option {
+  padding: 0.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  color: $color-dark-grey;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

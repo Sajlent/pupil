@@ -6,45 +6,13 @@ import Link from 'next/link';
 
 import { useAuthContext } from '@/app/providers';
 import { getUser } from '@/app/lib/actions';
-import { IUserData } from '@/app/types/User';
-
-import styles from './user.module.scss';
+import { animalsBadgeSchema } from '@/app/lib/constans';
 import Button from '@/app/ui/forms/button/button';
 import Badge from '@/app/ui/noticeboard/badge/badge';
+import { IUserData } from '@/app/types/User';
 import { ButtonTypes, ButtonVariants } from '@/app/types/Forms';
 
-const animalsSchema = {
-  cat: {
-    icon: 'cat.svg',
-    label: 'koty',
-    alt: 'Ikona kota',
-  },
-  dog: {
-    icon: 'dog.svg',
-    label: 'psy',
-    alt: 'Ikona psa',
-  },
-  fish: {
-    icon: 'fish.svg',
-    label: 'rybki',
-    alt: 'Ikona ryby',
-  },
-  rodent: {
-    icon: 'rodent.svg',
-    label: 'gryzonie',
-    alt: 'Ikona chomika',
-  },
-  rabbit: {
-    icon: 'rabbit.svg',
-    label: 'króliki',
-    alt: 'Ikona królika',
-  },
-  bird: {
-    icon: 'bird.svg',
-    label: 'ptaki',
-    alt: 'Ikona ptaka',
-  },
-};
+import styles from './user.module.scss';
 
 export default function Page({ params }: { params: { uid: string } }) {
   const { currentUser } = useAuthContext();
@@ -107,7 +75,7 @@ export default function Page({ params }: { params: { uid: string } }) {
           <h2 className={styles.details__heading}>Opiekuję się zwierzętami</h2>
           <ul className={styles.details__list}>
             {data.animals.map((animal) => {
-              const { label, icon, alt } = animalsSchema[animal];
+              const { label, icon, alt } = animalsBadgeSchema[animal];
               return (
                 <li key={animal}>
                   <Badge label={label} icon={icon} alt={alt} />
