@@ -1,7 +1,6 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -20,7 +19,6 @@ const initialState = {
 };
 
 export default function Home() {
-  const { register } = useForm();
   const [state, formAction] = useFormState(authenticate, initialState);
 
   return (
@@ -45,7 +43,6 @@ export default function Home() {
                 name="email"
                 type="email"
                 required
-                register={register}
               />
               <Input
                 id="password"
@@ -53,7 +50,6 @@ export default function Home() {
                 name="password"
                 type="password"
                 required
-                register={register}
               />
             </fieldset>
             <Button

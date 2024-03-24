@@ -27,7 +27,6 @@ export default function Nav() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        console.log('singed out');
         router.push('/');
       })
       .catch((error) => {

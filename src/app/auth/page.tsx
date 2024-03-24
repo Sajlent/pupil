@@ -1,7 +1,6 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { useForm } from 'react-hook-form';
 import { registerUser } from '@/app/lib/actions';
 import Button from '@/app/ui/forms/button/button';
 import Input from '@/app/ui/forms/input/input';
@@ -30,7 +29,6 @@ const userTypesSchema = [
 ];
 
 export default function Page() {
-  const { register } = useForm();
   const [state, formAction] = useFormState(registerUser, initialState);
 
   return (
@@ -44,21 +42,21 @@ export default function Page() {
               label="E-mail"
               name="email"
               type="email"
-              register={register}
+              required
             />
             <Input
               id="password"
               label="Hasło"
               name="password"
               type="password"
-              register={register}
+              required
             />
             <Input
               id="displayName"
               label="Nazwa użytkownika"
               name="displayName"
-              type="displayName"
-              register={register}
+              type="text"
+              required
             />
           </fieldset>
           <RadioGroup
@@ -66,7 +64,11 @@ export default function Page() {
             fields={userTypesSchema}
             legend="Wybierz rodzaj użytkownika:"
           />
-          <Button type={ButtonTypes.SUBMIT} label="Zarejestruj się" />
+          <Button
+            type={ButtonTypes.SUBMIT}
+            label="Zarejestruj się"
+            title="Zarejestruj się"
+          />
           <p aria-live="polite" role="status">
             {state?.message}
           </p>
