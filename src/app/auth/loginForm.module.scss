@@ -27,3 +27,14 @@
     margin-bottom: 1rem;
   }
 }
+
+.message {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: $color-green;
+  margin-top: 1rem;
+
+  &--error {
+    color: $color-red;
+  }
+}

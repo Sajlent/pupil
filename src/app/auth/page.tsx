@@ -1,30 +1,33 @@
-'use client';
+"use client";
 
-import { useFormState } from 'react-dom';
-import { registerUser } from '@/app/lib/actions';
-import Button from '@/app/ui/forms/button/button';
-import Input from '@/app/ui/forms/input/input';
-import RadioGroup from '@/app/ui/forms/radioGroup/radioGroup';
+import { useFormState } from "react-dom";
+import Link from "next/link";
 
-import { ButtonTypes } from '@/app/types/Forms';
-import { UserType } from '@/app/types/User';
+import { registerUser } from "@/app/lib/actions";
+import Button from "@/app/ui/forms/button/button";
+import Input from "@/app/ui/forms/input/input";
+import RadioGroup from "@/app/ui/forms/radioGroup/radioGroup";
 
-import styles from './loginForm.module.scss';
+import { ButtonTypes } from "@/app/types/Forms";
+import { UserType } from "@/app/types/User";
+
+import styles from "./loginForm.module.scss";
 
 const initialState = {
-  message: '',
+  error: false,
+  message: "",
 };
 
 const userTypesSchema = [
   {
     id: UserType.PETSITTER,
     value: UserType.PETSITTER,
-    label: 'opiekun',
+    label: "opiekun",
   },
   {
     id: UserType.PETOWNER,
     value: UserType.PETOWNER,
-    label: 'właściciel',
+    label: "właściciel",
   },
 ];
 
@@ -69,10 +72,17 @@ export default function Page() {
             label="Zarejestruj się"
             title="Zarejestruj się"
           />
-          <p aria-live="polite" role="status">
-            {state?.message}
+          <p
+            aria-live="polite"
+            role="status"
+            className={`${styles.message} ${state.error ? styles["message--error"] : ""}`}
+          >
+            {state.message}
           </p>
         </form>
+        <p>
+          Przejdź do <Link href={"/noticeboard"}>Strony głównej</Link>
+        </p>
       </div>
     </main>
   );

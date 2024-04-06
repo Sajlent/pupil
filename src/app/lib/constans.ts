@@ -1,59 +1,59 @@
 export const animalsBadgeSchema = {
   cat: {
-    icon: 'cat.svg',
-    label: 'koty',
-    alt: 'Ikona kota',
+    icon: "cat.svg",
+    label: "koty",
+    alt: "Ikona kota",
   },
   dog: {
-    icon: 'dog.svg',
-    label: 'psy',
-    alt: 'Ikona psa',
+    icon: "dog.svg",
+    label: "psy",
+    alt: "Ikona psa",
   },
   fish: {
-    icon: 'fish.svg',
-    label: 'rybki',
-    alt: 'Ikona ryby',
+    icon: "fish.svg",
+    label: "rybki",
+    alt: "Ikona ryby",
   },
   rodent: {
-    icon: 'rodent.svg',
-    label: 'gryzonie',
-    alt: 'Ikona chomika',
+    icon: "rodent.svg",
+    label: "gryzonie",
+    alt: "Ikona chomika",
   },
   rabbit: {
-    icon: 'rabbit.svg',
-    label: 'króliki',
-    alt: 'Ikona królika',
+    icon: "rabbit.svg",
+    label: "króliki",
+    alt: "Ikona królika",
   },
   bird: {
-    icon: 'bird.svg',
-    label: 'ptaki',
-    alt: 'Ikona ptaka',
+    icon: "bird.svg",
+    label: "ptaki",
+    alt: "Ikona ptaka",
   },
 };
 
 export const animalsOptionsSchema = [
   {
-    label: 'koty',
-    value: 'cat',
+    label: "koty",
+    value: "cat",
   },
   {
-    label: 'psy',
-    value: 'dog',
+    label: "psy",
+    value: "dog",
   },
   {
-    label: 'rybki',
-    value: 'fish',
+    label: "rybki",
+    value: "fish",
   },
   {
-    label: 'gryzonie',
-    value: 'rodent',
+    label: "gryzonie",
+    value: "rodent",
   },
   {
-    label: 'króliki',
-    value: 'rabbit',
+    label: "króliki",
+    value: "rabbit",
   },
   {
-    label: 'ptaki',
-    value: 'bird',
+    label: "ptaki",
+    value: "bird",
   },
 ];

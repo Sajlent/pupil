@@ -1,6 +1,6 @@
-import Nav from '@/app/ui/noticeboard/nav/nav';
-import styles from './noticeboard.module.scss';
-import { PropsWithChildren } from 'react';
+import Nav from "@/app/ui/noticeboard/nav/nav";
+import styles from "./noticeboard.module.scss";
+import { PropsWithChildren } from "react";
 
 export default function Layout({ children }: PropsWithChildren) {
   return (

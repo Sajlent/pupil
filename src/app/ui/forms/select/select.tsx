@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { FC } from "react";
+import { UseFormRegister, FieldValues } from "react-hook-form";
 
-import styles from './select.module.scss';
+import styles from "./select.module.scss";
 
 interface ISelectProps {
   defaultValue?: string | string[];
@@ -18,7 +18,7 @@ interface ISelectProps {
 }
 
 const Select: FC<ISelectProps> = ({
-  defaultValue = '',
+  defaultValue = "",
   id,
   label,
   name,
@@ -35,7 +35,7 @@ const Select: FC<ISelectProps> = ({
         {label}
       </label>
       <select
-        className={`${styles.select} ${multiple ? styles['select--multiple'] : ''}`}
+        className={`${styles.select} ${multiple ? styles["select--multiple"] : ""}`}
         defaultValue={defaultValue}
         name={name}
         multiple={multiple}

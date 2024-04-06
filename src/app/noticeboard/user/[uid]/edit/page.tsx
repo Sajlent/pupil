@@ -1,29 +1,41 @@
-'use client';
+"use client";
 
-import { useFormState } from 'react-dom';
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 
-import { getUser, updateUserProfile } from '@/app/lib/actions';
-import { animalsOptionsSchema } from '@/app/lib/constans';
+import { getUser, updateUserProfile } from "@/app/lib/actions";
+import { animalsOptionsSchema } from "@/app/lib/constans";
 
-import Button from '@/app/ui/forms/button/button';
-import { ButtonTypes } from '@/app/types/Forms';
-import Input from '@/app/ui/forms/input/input';
-import Select from '@/app/ui/forms/select/select';
-import { IUserData } from '@/app/types/User';
+import { useNotificationContext } from "@/app/providers";
+import Button from "@/app/ui/forms/button/button";
+import { ButtonTypes, NotificationTypes } from "@/app/types/Forms";
+import Input from "@/app/ui/forms/input/input";
+import Select from "@/app/ui/forms/select/select";
+import UploadForm from "@/app/ui/noticeboard/uploadForm/uploadForm";
+import { IUserData } from "@/app/types/User";
 
-import styles from '../user.module.scss';
-import { useState } from 'react';
+import styles from "../user.module.scss";
 
 const initialState = {};
 
 export default function Page({ params }: { params: { uid: string } }) {
+  const { setNotification } = useNotificationContext();
   const uid = params.uid;
   const updateUserProfileWithUid = updateUserProfile.bind(null, uid);
-  const [state, formAction] = useFormState(
+  const [profileDataStatus, formAction] = useFormState(
     updateUserProfileWithUid,
     initialState
   );
   const [data, setData] = useState<IUserData | null>(null);
+
+  useEffect(() => {
+    if (profileDataStatus.success) {
+      setNotification({
+        text: "Pomyślnie zapisano dane profilowe.",
+        type: NotificationTypes.SUCCESS,
+      });
+    }
+  }, [profileDataStatus]);
 
   getUser(uid).then((user) => {
     if (user && !data) {
@@ -34,7 +46,7 @@ export default function Page({ params }: { params: { uid: string } }) {
   if (!data) return null;
 
   return (
-    <section>
+    <section className={styles.section}>
       <header>
         <h1>Edytuj profil</h1>
       </header>
@@ -65,6 +77,14 @@ export default function Page({ params }: { params: { uid: string } }) {
             type="text"
             required
           />
+          <Input
+            id="city"
+            label="Miasto"
+            name="city"
+            defaultValue={data.city}
+            type="text"
+            required
+          />
         </fieldset>
         <fieldset className={styles.form__fieldset}>
           <legend className={styles.form__legend}>Zwierzęta do opieki</legend>
@@ -72,13 +92,20 @@ export default function Page({ params }: { params: { uid: string } }) {
             id="animals"
             label="Wybierz gatunki"
             name="animals"
-            defaultValue={data.animals}
+            defaultValue={data.animals || []}
             options={animalsOptionsSchema}
             multiple
           />
         </fieldset>
         <fieldset className={styles.form__fieldset}>
           <legend className={styles.form__legend}>Dane opisowe</legend>
+          <Input
+            id="summary"
+            label="Podsumowanie"
+            name="summary"
+            defaultValue={data.summary}
+            type="text"
+          />
           <Input
             id="description"
             label="Opis"
@@ -100,6 +127,7 @@ export default function Page({ params }: { params: { uid: string } }) {
           title="Zapisz zmiany"
         />
       </form>
+      <UploadForm uid={uid} />
     </section>
   );
 }

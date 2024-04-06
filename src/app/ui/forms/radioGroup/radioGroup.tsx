@@ -1,6 +1,6 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment } from "react";
 
-import styles from './radioGroup.module.scss';
+import styles from "./radioGroup.module.scss";
 
 interface IRadioGroupProps {
   fields: object;

@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
-import { useAuthContext } from '@/app/providers';
-import { getUser } from '@/app/lib/actions';
-import { animalsBadgeSchema } from '@/app/lib/constans';
-import Button from '@/app/ui/forms/button/button';
-import Badge from '@/app/ui/noticeboard/badge/badge';
-import { IUserData } from '@/app/types/User';
-import { ButtonTypes, ButtonVariants } from '@/app/types/Forms';
+import { useAuthContext } from "@/app/providers";
+import { getUser } from "@/app/lib/actions";
+import { animalsBadgeSchema } from "@/app/lib/constans";
+import Button from "@/app/ui/forms/button/button";
+import Badge from "@/app/ui/noticeboard/badge/badge";
+import { IUserData } from "@/app/types/User";
+import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
-import styles from './user.module.scss';
+import styles from "./user.module.scss";
 
 export default function Page({ params }: { params: { uid: string } }) {
   const { currentUser } = useAuthContext();
@@ -33,7 +33,12 @@ export default function Page({ params }: { params: { uid: string } }) {
       {/* column left */}
       <div>
         <div className={styles.photo}>
-          <Image src="/images/cat.jpg" width={128} height={128} alt="Cat" />
+          <Image
+            src={data.photo || "/images/cat.jpg"}
+            width={256}
+            height={256}
+            alt="Cat"
+          />
         </div>
         <div className={styles.card}>
           <dl>
@@ -41,6 +46,8 @@ export default function Page({ params }: { params: { uid: string } }) {
             <dd className={styles.details__content}>
               {data.firstname} {data.lastname}
             </dd>
+            <dt className={styles.details__title}>Miasto</dt>
+            <dd className={styles.details__content}>{data.city}</dd>
             <dt className={styles.details__title}>Kilka słów o mnie</dt>
             <dd className={styles.details__content}>{data.summary}</dd>
           </dl>
@@ -71,10 +78,9 @@ export default function Page({ params }: { params: { uid: string } }) {
           </dl>
         </article>
         <article className={styles.card}>
-          {/* TODO: handle & style animal list */}
           <h2 className={styles.details__heading}>Opiekuję się zwierzętami</h2>
           <ul className={styles.details__list}>
-            {data.animals.map((animal) => {
+            {data.animals?.map((animal) => {
               const { label, icon, alt } = animalsBadgeSchema[animal];
               return (
                 <li key={animal}>

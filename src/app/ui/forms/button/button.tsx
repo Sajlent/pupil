@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import { ButtonTypes, ButtonVariants } from '@/app/types/Forms';
+import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
-import styles from './button.module.scss';
+import styles from "./button.module.scss";
 
 interface IButtonProps {
   type: ButtonTypes;

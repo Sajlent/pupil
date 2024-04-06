@@ -1,18 +1,19 @@
 export enum UserType {
-  PETSITTER = 'petsitter',
-  PETOWNER = 'petowner',
+  PETSITTER = "petsitter",
+  PETOWNER = "petowner",
 }
 
 export enum AnimalType {
-  CAT = 'cat',
-  DOG = 'dog',
-  RABBIT = 'rabbit',
-  RODENT = 'rodent',
-  FISH = 'fish',
-  BIRD = 'bird',
+  CAT = "cat",
+  DOG = "dog",
+  RABBIT = "rabbit",
+  RODENT = "rodent",
+  FISH = "fish",
+  BIRD = "bird",
 }
 
 export interface IUserData {
+  city: string;
   displayName: string;
   description: string;
   firstname: string;

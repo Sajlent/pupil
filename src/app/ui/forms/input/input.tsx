@@ -1,21 +1,23 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import styles from './input.module.scss';
+import styles from "./input.module.scss";
 
 interface IInputProps {
   defaultValue?: string;
   id: string;
   label: string;
   name: string;
+  minLength?: number;
   required?: boolean;
   type: string;
 }
 
 const Input: FC<IInputProps> = ({
-  defaultValue = '',
+  defaultValue = "",
   id,
   label,
   name,
+  minLength = 0,
   required = false,
   type,
 }) => {
@@ -24,7 +26,7 @@ const Input: FC<IInputProps> = ({
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
-      {type === 'textarea' ? (
+      {type === "textarea" ? (
         <textarea
           className={styles.input}
           id={id}
@@ -41,6 +43,7 @@ const Input: FC<IInputProps> = ({
           defaultValue={defaultValue}
           name={name}
           required={required}
+          minLength={minLength}
         />
       )}
     </>

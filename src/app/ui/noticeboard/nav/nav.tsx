@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { signOut } from 'firebase/auth';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
 
-import { useAuthContext } from '@/app/providers';
-import { auth } from '@/app/scripts/firebase';
-import Button from '@/app/ui/forms/button/button';
-import { ButtonTypes, ButtonVariants } from '@/app/types/Forms';
+import { useAuthContext } from "@/app/providers";
+import { auth } from "@/app/scripts/firebase";
+import Button from "@/app/ui/forms/button/button";
+import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
-import styles from './nav.module.scss';
+import styles from "./nav.module.scss";
 
 const navLinks = [
-  { name: 'Strona główna', href: '/noticeboard' },
-  { name: 'Ogłoszenia', href: '/noticeboard/notices' },
-  { name: 'Opiekunowie', href: '/noticeboard/petsitters' },
+  { name: "Strona główna", href: "/noticeboard" },
+  { name: "Ogłoszenia", href: "/noticeboard/notices" },
+  { name: "Opiekunowie", href: "/noticeboard/petsitters" },
 ];
 
 export default function Nav() {
@@ -27,11 +27,11 @@ export default function Nav() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        router.push('/');
+        router.push("/");
       })
       .catch((error) => {
         // An error happened.
-        console.log('error', error);
+        console.log("error", error);
         // Maybe toast message?
       });
   }

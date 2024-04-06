@@ -3,87 +3,97 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   setPersistence,
-} from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db, auth } from '@/app/scripts/firebase';
+} from "firebase/auth";
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { db, auth } from "@/app/scripts/firebase";
+import { FormSchema } from "@/app/types/Forms";
+import { normalizeFirebaseError } from "./validation";
 
 const userRegistrationSchema = {
-  email: '',
-  password: '',
-  displayName: '',
-  type: '',
+  email: "",
+  password: "",
+  displayName: "",
+  type: "",
 };
 
 const userProfileSchema = {
-  firstname: '',
-  lastname: '',
-  displayName: '',
+  city: "",
+  firstname: "",
+  lastname: "",
+  displayName: "",
   animals: [],
-  description: '',
-  skills: '',
+  summary: "",
+  description: "",
+  skills: "",
+};
+
+const noticeSchema = {
+  animal: "",
+  city: "",
+  title: "",
+  description: "",
 };
 
 export async function registerUser(prevState: any, formData: FormData) {
+  let state = { error: false, message: "" };
+
   try {
     // get data filled in registration form
-    for (let field in userRegistrationSchema) {
-      // @ts-ignore
-      userRegistrationSchema[field] = formData.get(field);
-    }
+    const values = mapValuesToSchema(userRegistrationSchema, formData);
 
     // validate if obligatory fields has values
-    // TODO: Better validation, e.g. password length
     if (
-      !userRegistrationSchema.email.length ||
-      !userRegistrationSchema.password.length
+      typeof values.email !== "string" ||
+      !values.email.length ||
+      typeof values.password !== "string" ||
+      !values.password.length
     )
-      return { message: 'Proszę podać adres e-mail oraz hasło' };
+      return { error: true, message: "Proszę podać adres e-mail oraz hasło" };
 
     // send basic user credentials (email & password) to Firebase
-    createUserWithEmailAndPassword(
-      auth,
-      userRegistrationSchema.email,
-      userRegistrationSchema.password
-    )
-      .then((userCredential) => {
+    await createUserWithEmailAndPassword(auth, values.email, values.password)
+      .then(async (userCredential) => {
         const user = userCredential.user;
 
         // after creating new user, save his additional data in users collection
-        setDoc(doc(db, 'users', user.uid), {
-          displayName: userRegistrationSchema.displayName,
-          type: userRegistrationSchema.type,
+        await setDoc(doc(db, "users", user.uid), {
+          displayName: values.displayName,
+          type: values.type,
         });
+
+        state = { error: false, message: "Pomyślnie założono konto." };
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-
-        // Already used email is handled by Firebase - it returns message: "EMAIL_EXISTS"
-
-        console.error(errorCode + ' ' + errorMessage);
+        state = {
+          error: true,
+          message: normalizeFirebaseError(error),
+        };
       });
   } catch (error) {
     // pass error message to display on form
-    return { message: 'Wystąpił błąd.' };
+    state = {
+      error: true,
+      message: "Wystąpił błąd.",
+    };
   }
 
-  // TODO: handle Firebase
-  return { message: 'Pomyślnie założono konto.' };
+  return state;
 }
 
 export async function authenticate(prevState: any, formData: FormData) {
-  const state = { isLoggedIn: false, message: '' };
+  const state = { isLoggedIn: false, message: "" };
 
   try {
     // get data filled in login form
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     // validate if obligatory fields has values
     if (!email || !password)
       return {
         isLoggedIn: false,
-        message: 'Proszę podać adres e-mail oraz hasło',
+        message: "Proszę podać adres e-mail oraz hasło.",
       };
 
     await setPersistence(auth, browserSessionPersistence)
@@ -95,19 +105,14 @@ export async function authenticate(prevState: any, formData: FormData) {
         );
 
         state.isLoggedIn = true;
-        state.message = 'Zalogowano pomyślnie';
+        state.message = "Zalogowano pomyślnie";
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-
-        console.log(errorMessage);
-        // TODO: handle wrong credentials
-        state.message = errorMessage;
+        state.message = normalizeFirebaseError(error);
       });
   } catch (error) {
     // pass error message to display on form
-    // return { message: 'Wystąpił błąd.' };
+    state.message = "Wystąpił błąd.";
   }
 
   return state;
@@ -116,7 +121,7 @@ export async function authenticate(prevState: any, formData: FormData) {
 export async function getUser(uid: string) {
   try {
     // get user from Firebase with auth
-    const userRef = doc(db, 'users', uid);
+    const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists()) {
@@ -134,22 +139,66 @@ export async function updateUserProfile(
   prevState: any,
   formData: FormData
 ) {
-  for (let field in userProfileSchema) {
-    // @ts-ignore
-    if (Array.isArray(userProfileSchema[field])) {
-      // @ts-ignore
-      userProfileSchema[field] = formData.getAll(field);
+  const values = mapValuesToSchema(userProfileSchema, formData);
+
+  try {
+    const usersRef = doc(db, "users", uid);
+
+    setDoc(usersRef, values, { merge: true });
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { ...prevState, success: true };
+}
+
+export async function saveToBucket(
+  uid: string,
+  prevState: any,
+  formData: FormData
+) {
+  const file = formData.get("photo") as File;
+
+  if (!file.size) return { ...prevState, error: true };
+
+  const storage = getStorage();
+  const storageRef = ref(storage, `userAvatars/${uid}`);
+
+  uploadBytes(storageRef, file).then(() => {
+    getDownloadURL(ref(storage, `userAvatars/${uid}`)).then((url) => {
+      const usersRef = doc(db, "users", uid);
+
+      setDoc(usersRef, { photo: url }, { merge: true });
+    });
+  });
+
+  return { ...prevState, success: true };
+}
+
+export async function addNotice(prevState: any, formData: FormData) {
+  const values = mapValuesToSchema(noticeSchema, formData);
+
+  try {
+    // Add a new document with a generated id.
+    const docRef = await addDoc(collection(db, "notices"), values);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { ...prevState, success: true };
+}
+
+const mapValuesToSchema = (schema: FormSchema, formData: FormData) => {
+  const values = { ...schema };
+
+  for (let field in schema) {
+    if (Array.isArray(schema[field as keyof typeof schema])) {
+      values[field] = formData.getAll(field) as string[];
     } else {
-      // @ts-ignore
-      userProfileSchema[field] = formData.get(field);
+      values[field] = formData.get(field) as string;
     }
   }
 
-  try {
-    const usersRef = doc(db, 'users', uid);
-
-    setDoc(usersRef, userProfileSchema, { merge: true });
-  } catch {}
-
-  return {};
-}
+  return values;
+};
