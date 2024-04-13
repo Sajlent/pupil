@@ -17,7 +17,9 @@ export interface IUserData {
   displayName: string;
   description: string;
   firstname: string;
+  id: string;
   lastname: string;
+  photo?: string;
   summary: string;
   skills: string;
   type: UserType;

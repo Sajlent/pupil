@@ -34,10 +34,10 @@ export default function Page({ params }: { params: { uid: string } }) {
       <div>
         <div className={styles.photo}>
           <Image
-            src={data.photo || "/images/cat.jpg"}
+            src={data.photo || "/images/icons/user.png"}
             width={256}
             height={256}
-            alt="Cat"
+            alt="Avatar placeholder"
           />
         </div>
         <div className={styles.card}>

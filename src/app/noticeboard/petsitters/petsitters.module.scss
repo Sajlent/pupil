@@ -1,0 +1,49 @@
+.root {
+  max-width: 50%;
+  margin: 2rem auto;
+}
+
+.petsitter {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  padding: 1rem;
+  margin: 2rem 0;
+  border: 1px solid $color-grey;
+  border-radius: 1rem;
+
+  &__photo {
+    border-radius: 1rem;
+  }
+
+  &__summary {
+    font-size: 0.875rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+  }
+
+  &__city {
+    position: relative;
+    font-size: 0.875rem;
+    color: $color-dark-grey;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 1.5rem;
+
+    & > i {
+      font-size: 1.25rem;
+      position: absolute;
+      left: 0;
+      top: -1px;
+    }
+  }
+
+  &__link {
+    display: block;
+    float: right;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: $color-dark-teal;
+    text-align: right;
+    text-decoration: none;
+  }
+}

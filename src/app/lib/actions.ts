@@ -4,11 +4,21 @@ import {
   signInWithEmailAndPassword,
   setPersistence,
 } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db, auth } from "@/app/scripts/firebase";
 import { FormSchema } from "@/app/types/Forms";
-import { normalizeFirebaseError } from "./validation";
+import { IUserData, UserType } from "@/app/types/User";
+import { normalizeFirebaseError } from "@/app/lib/validation";
 
 const userRegistrationSchema = {
   email: "",
@@ -187,6 +197,31 @@ export async function addNotice(prevState: any, formData: FormData) {
   }
 
   return { ...prevState, success: true };
+}
+
+// TODO: add custom filters
+export async function getPetsittersList() {
+  const data: IUserData[] = [];
+  const q = query(
+    collection(db, "users"),
+    where("type", "==", UserType.PETSITTER)
+  );
+
+  try {
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const petsitterData = doc.data() as IUserData;
+
+      data.push({
+        ...petsitterData,
+        id: doc.id,
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  return data;
 }
 
 const mapValuesToSchema = (schema: FormSchema, formData: FormData) => {
