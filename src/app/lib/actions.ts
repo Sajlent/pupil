@@ -199,13 +199,18 @@ export async function addNotice(prevState: any, formData: FormData) {
   return { ...prevState, success: true };
 }
 
-// TODO: add custom filters
-export async function getPetsittersList() {
+export async function getPetsittersList(searchParams: {
+  [key: string]: string | string[] | undefined;
+}) {
   const data: IUserData[] = [];
-  const q = query(
-    collection(db, "users"),
-    where("type", "==", UserType.PETSITTER)
-  );
+  const constraints = [where("type", "==", UserType.PETSITTER)];
+  const { city: cityFilter, animals: animalFilter } = searchParams;
+
+  if (cityFilter) constraints.push(where("city", "==", cityFilter));
+  if (animalFilter)
+    constraints.push(where("animals", "array-contains", animalFilter));
+
+  const q = query(collection(db, "users"), ...constraints);
 
   try {
     const querySnapshot = await getDocs(q);

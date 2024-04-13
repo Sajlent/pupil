@@ -5,8 +5,12 @@ import { getPetsittersList } from "@/app/lib/actions";
 import styles from "./petsitters.module.scss";
 import Link from "next/link";
 
-export default async function Page() {
-  const data = await getPetsittersList();
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const data = await getPetsittersList(searchParams);
 
   // TODO: server data fetching - add loading.js page
   return (
