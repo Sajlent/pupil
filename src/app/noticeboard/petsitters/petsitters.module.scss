@@ -1,6 +1,18 @@
 .root {
-  max-width: 50%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 4rem;
+  max-width: 75%;
   margin: 2rem auto;
+}
+
+.header {
+  grid-column: 1 / -1;
+}
+
+.aside {
+  max-width: 50%;
+  margin: 2rem 0;
 }
 
 .petsitter {
@@ -45,5 +57,20 @@
     color: $color-dark-teal;
     text-align: right;
     text-decoration: none;
+  }
+}
+
+.info {
+  font-weight: bold;
+  color: $color-dark-grey;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  & > i {
+    font-size: 4rem;
+    display: block;
+    color: $color-blue;
+    margin-bottom: 1rem;
   }
 }

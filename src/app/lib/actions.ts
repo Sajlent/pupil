@@ -17,7 +17,7 @@ import {
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db, auth } from "@/app/scripts/firebase";
 import { FormSchema } from "@/app/types/Forms";
-import { IUserData, UserType } from "@/app/types/User";
+import { ICityData, IUserData, UserType } from "@/app/types/User";
 import { normalizeFirebaseError } from "@/app/lib/validation";
 
 const userRegistrationSchema = {
@@ -150,11 +150,25 @@ export async function updateUserProfile(
   formData: FormData
 ) {
   const values = mapValuesToSchema(userProfileSchema, formData);
+  const { city } = values;
 
   try {
+    // Save user details
     const usersRef = doc(db, "users", uid);
 
-    setDoc(usersRef, values, { merge: true });
+    await setDoc(usersRef, values, { merge: true });
+
+    // Save new city to filters
+    if (typeof city === "string" && city.length) {
+      const normalizedCityName = replacePolishCharacters(city).toLowerCase();
+      const citiesRef = doc(db, "cities", normalizedCityName);
+      const docSnap = await getDoc(citiesRef);
+
+      // Check if city is already added to collection
+      if (!docSnap.exists()) {
+        await setDoc(citiesRef, { value: city, label: city });
+      }
+    }
   } catch (error) {
     console.log(error);
   }
@@ -204,7 +218,7 @@ export async function getPetsittersList(searchParams: {
 }) {
   const data: IUserData[] = [];
   const constraints = [where("type", "==", UserType.PETSITTER)];
-  const { city: cityFilter, animals: animalFilter } = searchParams;
+  const { city: cityFilter, animal: animalFilter } = searchParams;
 
   if (cityFilter) constraints.push(where("city", "==", cityFilter));
   if (animalFilter)
@@ -229,6 +243,24 @@ export async function getPetsittersList(searchParams: {
   return data;
 }
 
+export async function getCities() {
+  const data: ICityData[] = [];
+
+  try {
+    const querySnapshot = await getDocs(collection(db, "cities"));
+
+    querySnapshot.forEach((doc) => {
+      const citiesData = doc.data() as ICityData;
+
+      data.push(citiesData);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  return data;
+}
+
 const mapValuesToSchema = (schema: FormSchema, formData: FormData) => {
   const values = { ...schema };
 
@@ -241,4 +273,23 @@ const mapValuesToSchema = (schema: FormSchema, formData: FormData) => {
   }
 
   return values;
+};
+
+const replacePolishCharacters = (inputString: string) => {
+  const polishChars = {
+    ą: "a",
+    ć: "c",
+    ę: "e",
+    ł: "l",
+    ń: "n",
+    ó: "o",
+    ś: "s",
+    ź: "z",
+    ż: "z",
+  };
+
+  return inputString.replace(
+    /[ąćęłńóśźż]/g,
+    (match) => polishChars[match as keyof typeof polishChars] || match
+  );
 };

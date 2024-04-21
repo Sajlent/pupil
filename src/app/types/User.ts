@@ -25,3 +25,8 @@ export interface IUserData {
   type: UserType;
   animals: AnimalType[];
 }
+
+export interface ICityData {
+  value: string;
+  label: string;
+}

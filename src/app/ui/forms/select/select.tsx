@@ -1,5 +1,6 @@
-import { FC } from "react";
-import { UseFormRegister, FieldValues } from "react-hook-form";
+"use client";
+
+import { FC, ChangeEvent } from "react";
 
 import styles from "./select.module.scss";
 
@@ -9,12 +10,13 @@ interface ISelectProps {
   label: string;
   name: string;
   multiple?: boolean;
+  onChange?: (event: ChangeEvent) => void;
   options: {
     label: string;
     value: string;
   }[];
+  placeholder?: string;
   required?: boolean;
-  // register: UseFormRegister<FieldValues>;
 }
 
 const Select: FC<ISelectProps> = ({
@@ -23,9 +25,10 @@ const Select: FC<ISelectProps> = ({
   label,
   name,
   multiple = false,
+  onChange,
   options,
+  placeholder = "Wybierz...",
   required,
-  // register,
 }) => {
   if (!Array.isArray(options)) return null;
 
@@ -37,13 +40,15 @@ const Select: FC<ISelectProps> = ({
       <select
         className={`${styles.select} ${multiple ? styles["select--multiple"] : ""}`}
         defaultValue={defaultValue}
+        id={id}
         name={name}
         multiple={multiple}
         required={required}
+        onChange={onChange}
       >
         {!multiple && (
           <option className={styles.option} value="">
-            Wybierz...
+            {placeholder}
           </option>
         )}
         {options.map((option) => (
