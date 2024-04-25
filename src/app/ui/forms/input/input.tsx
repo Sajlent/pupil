@@ -8,6 +8,7 @@ interface IInputProps {
   label: string;
   name: string;
   minLength?: number;
+  placeholder?: string;
   required?: boolean;
   type: string;
 }
@@ -18,6 +19,7 @@ const Input: FC<IInputProps> = ({
   label,
   name,
   minLength = 0,
+  placeholder,
   required = false,
   type,
 }) => {
@@ -32,6 +34,7 @@ const Input: FC<IInputProps> = ({
           id={id}
           defaultValue={defaultValue}
           name={name}
+          placeholder={placeholder}
           required={required}
           rows={10}
         />
@@ -42,6 +45,7 @@ const Input: FC<IInputProps> = ({
           id={id}
           defaultValue={defaultValue}
           name={name}
+          placeholder={placeholder}
           required={required}
           minLength={minLength}
         />

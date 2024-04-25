@@ -1,19 +1,12 @@
-.select {
-  display: block;
-  width: 100%;
-  padding: 1rem 0.5rem;
+.input {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
   border: 1px solid $color-grey;
   border-radius: 0.25rem;
 
-  &--multiple {
-    max-width: 300px;
-    min-height: 100px;
-    font-size: 0.875rem;
+  &:hover {
+    border-color: black;
   }
-}
-
-.option {
-  padding: 0.5rem;
 }
 
 .label {

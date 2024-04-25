@@ -41,8 +41,12 @@ const userProfileSchema = {
 const noticeSchema = {
   animal: "",
   city: "",
+  createdAt: "",
   title: "",
   description: "",
+  ownerId: "",
+  startDate: "",
+  endDate: "",
 };
 
 export async function registerUser(prevState: any, formData: FormData) {
@@ -199,12 +203,20 @@ export async function saveToBucket(
   return { ...prevState, success: true };
 }
 
-export async function addNotice(prevState: any, formData: FormData) {
+export async function addNotice(
+  uid: string,
+  prevState: any,
+  formData: FormData
+) {
+  formData.set("ownerId", uid);
+  formData.set("createdAt", new Date().getTime().toString());
+
   const values = mapValuesToSchema(noticeSchema, formData);
 
   try {
     // Add a new document with a generated id.
     const docRef = await addDoc(collection(db, "notices"), values);
+    // TODO: save city to cities collection
     console.log("Document written with ID: ", docRef.id);
   } catch (error) {
     console.log(error);
@@ -233,6 +245,36 @@ export async function getPetsittersList(searchParams: {
 
       data.push({
         ...petsitterData,
+        id: doc.id,
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  return data;
+}
+
+export async function getNoticesList(searchParams: {
+  [key: string]: string | string[] | undefined;
+}) {
+  const data = [];
+  const constraints = [];
+  const { city: cityFilter, animal: animalFilter } = searchParams;
+
+  if (cityFilter) constraints.push(where("city", "==", cityFilter));
+  if (animalFilter)
+    constraints.push(where("animals", "array-contains", animalFilter));
+
+  const q = query(collection(db, "notices"), ...constraints);
+
+  try {
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const noticesData = doc.data();
+
+      data.push({
+        ...noticesData,
         id: doc.id,
       });
     });
