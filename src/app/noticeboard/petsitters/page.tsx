@@ -6,6 +6,7 @@ import { animalsOptionsSchema } from "@/app/lib/constans";
 import Filters from "@/app/ui/noticeboard/filters/filters";
 
 import styles from "./petsitters.module.scss";
+import NoResults from "@/app/ui/noticeboard/noResults/noResults";
 
 export default async function Page({
   searchParams,
@@ -73,10 +74,7 @@ export default async function Page({
             </article>
           ))
         ) : (
-          <p className={styles.info}>
-            <i className="lnr lnr-question-circle" />
-            Brak wyników, zmień filtry.
-          </p>
+          <NoResults />
         )}
       </section>
     </div>

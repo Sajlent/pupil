@@ -1,8 +1,12 @@
 import { getCities, getNoticesList } from "@/app/lib/actions";
 import { animalsOptionsSchema } from "@/app/lib/constans";
 import Filters from "@/app/ui/noticeboard/filters/filters";
+import calcutatePassedDays from "@/app/lib/calculatePassedDays";
 
 import styles from "./notices.module.scss";
+import NoResults from "@/app/ui/noticeboard/noResults/noResults";
+import Button from "@/app/ui/forms/button/button";
+import { ButtonTypes } from "@/app/types/Forms";
 
 export default async function Page({
   searchParams,
@@ -38,31 +42,33 @@ export default async function Page({
           data.map((notice) => (
             <article key={notice.id} className={styles.notice}>
               <h2>{notice.title}</h2>
-              <p>
-                {/* TODO: calculate days passed from date */}
-                {Math.floor(
-                  (new Date() - new Date(notice.createdAt)) /
-                    1000 /
-                    60 /
-                    60 /
-                    24
-                ) + " day(s) ago"}
-              </p>
-              <p className={styles.notice__description}>{notice.description}</p>
-              <p>
-                W dniach: {notice.startDate} - {notice.endDate}
-                <span className={styles.notice__city}>
+              <div className={styles.notice__info}>
+                <span className={styles.notice__detail}>
+                  <i className="lnr lnr-clock" />
+                  Dodano {calcutatePassedDays(notice.createdAt)} dni temu
+                </span>
+                <span className={styles.notice__detail}>
                   <i className="lnr lnr-map-marker" />
                   {notice.city}
                 </span>
-              </p>
+                <span className={styles.notice__detail}>
+                  <i className="lnr lnr-calendar-full" />W dniach:{" "}
+                  {notice.startDate} - {notice.endDate}
+                </span>
+              </div>
+              <p className={styles.notice__description}>{notice.description}</p>
+              <div className={styles.notice__actions}>
+                {/* TODO: make button visible only for users with type "petsitter" */}
+                <Button
+                  type={ButtonTypes.BUTTON}
+                  title="Zgłoś się"
+                  label="Zgłoś się"
+                />
+              </div>
             </article>
           ))
         ) : (
-          <p className={styles.info}>
-            <i className="lnr lnr-question-circle" />
-            Brak wyników, zmień filtry.
-          </p>
+          <NoResults />
         )}
       </section>
     </div>

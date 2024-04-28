@@ -24,6 +24,34 @@
   &__description {
     font-size: 0.875rem;
   }
+
+  &__info {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: center;
+    background-color: black;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: 1px solid;
+    border-radius: 1rem;
+
+    > i {
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__actions {
+    text-align: right;
+    margin: 1rem 0 0;
+  }
 }
 
 .heading {

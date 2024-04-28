@@ -59,18 +59,3 @@
     text-decoration: none;
   }
 }
-
-.info {
-  font-weight: bold;
-  color: $color-dark-grey;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-
-  & > i {
-    font-size: 4rem;
-    display: block;
-    color: $color-blue;
-    margin-bottom: 1rem;
-  }
-}

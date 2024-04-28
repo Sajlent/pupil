@@ -18,6 +18,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db, auth } from "@/app/scripts/firebase";
 import { FormSchema } from "@/app/types/Forms";
 import { ICityData, IUserData, UserType } from "@/app/types/User";
+import { INoticeData } from "@/app/types/Notice";
 import { normalizeFirebaseError } from "@/app/lib/validation";
 
 const userRegistrationSchema = {
@@ -212,12 +213,22 @@ export async function addNotice(
   formData.set("createdAt", new Date().getTime().toString());
 
   const values = mapValuesToSchema(noticeSchema, formData);
+  const { city } = values;
 
   try {
     // Add a new document with a generated id.
     const docRef = await addDoc(collection(db, "notices"), values);
-    // TODO: save city to cities collection
-    console.log("Document written with ID: ", docRef.id);
+
+    if (typeof city === "string" && city.length) {
+      const normalizedCityName = replacePolishCharacters(city).toLowerCase();
+      const citiesRef = doc(db, "cities", normalizedCityName);
+      const docSnap = await getDoc(citiesRef);
+
+      // Check if city is already added to collection
+      if (!docSnap.exists()) {
+        await setDoc(citiesRef, { value: city, label: city });
+      }
+    }
   } catch (error) {
     console.log(error);
   }
@@ -258,7 +269,7 @@ export async function getPetsittersList(searchParams: {
 export async function getNoticesList(searchParams: {
   [key: string]: string | string[] | undefined;
 }) {
-  const data = [];
+  const data: INoticeData[] = [];
   const constraints = [];
   const { city: cityFilter, animal: animalFilter } = searchParams;
 
@@ -271,12 +282,9 @@ export async function getNoticesList(searchParams: {
   try {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      const noticesData = doc.data();
+      const noticesData = doc.data() as INoticeData;
 
-      data.push({
-        ...noticesData,
-        id: doc.id,
-      });
+      data.push(noticesData);
     });
   } catch (error) {
     console.error(error);
