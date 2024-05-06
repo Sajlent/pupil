@@ -1,13 +1,19 @@
 "use client";
 
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  ReactElement,
+  useContext,
+  useState,
+} from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 
 import { auth, db } from "@/app/scripts/firebase";
 import { UserType } from "@/app/types/User";
 import { NotificationTypes } from "./types/Forms";
+import Modal from "./ui/modal/modal";
 interface ICurrentUser {
   email: string | null;
   displayName: string | null;
@@ -23,9 +29,19 @@ interface INotification {
   text: string;
   type: NotificationTypes;
 }
+
+interface IModal {
+  isOpen: boolean;
+  content: ReactElement | null;
+}
 interface INotificationContext {
   notification: INotification | null;
   setNotification: (notification: INotification | null) => void;
+}
+
+interface IModalContext {
+  modal: IModal;
+  setModal: (modal: IModal) => void;
 }
 
 const AuthContext = createContext<IAuthContext>({
@@ -40,10 +56,21 @@ const NotificationContext = createContext<INotificationContext>({
   setNotification: () => {},
 });
 
+const ModalContext = createContext<IModalContext>({
+  modal: {
+    isOpen: false,
+    content: null,
+  },
+  setModal: () => {},
+});
+
 export function Providers({ children }: PropsWithChildren) {
-  const router = useRouter();
   const [currentUser, setCurrentUser] = useState<ICurrentUser | null>(null);
   const [notification, setNotification] = useState<INotification | null>(null);
+  const [modal, setModal] = useState<IModal>({
+    isOpen: false,
+    content: null,
+  });
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -64,8 +91,6 @@ export function Providers({ children }: PropsWithChildren) {
             uid,
             type: userData.type,
           });
-
-          // router.push('/noticeboard');
         }
       } else {
         // Sign in went wrong, there is no data for this user
@@ -86,7 +111,10 @@ export function Providers({ children }: PropsWithChildren) {
       }}
     >
       <NotificationContext.Provider value={{ notification, setNotification }}>
-        {children}
+        <ModalContext.Provider value={{ modal, setModal }}>
+          {children}
+          {modal.isOpen && <Modal />}
+        </ModalContext.Provider>
       </NotificationContext.Provider>
     </AuthContext.Provider>
   );
@@ -103,9 +131,19 @@ export function useAuthContext() {
 export function useNotificationContext() {
   if (!NotificationContext) {
     throw new Error(
-      "NotificationContext has to be used within <AuthContext.Provider>"
+      "NotificationContext has to be used within <NotificationContext.Provider>"
     );
   }
 
   return useContext(NotificationContext);
+}
+
+export function useModalContext() {
+  if (!ModalContext) {
+    throw new Error(
+      "ModalContext has to be used within <ModalContext.Provider>"
+    );
+  }
+
+  return useContext(ModalContext);
 }

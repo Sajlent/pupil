@@ -24,8 +24,6 @@ const UploadForm: FC<IUploadFormProps> = ({ uid }) => {
     initialState
   );
 
-  console.log("uploadFormStatus", uploadFormStatus);
-
   useEffect(() => {
     if (uploadFormStatus.success) {
       setNotification({

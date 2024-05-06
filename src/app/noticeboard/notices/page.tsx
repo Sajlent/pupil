@@ -5,8 +5,7 @@ import calcutatePassedDays from "@/app/lib/calculatePassedDays";
 
 import styles from "./notices.module.scss";
 import NoResults from "@/app/ui/noticeboard/noResults/noResults";
-import Button from "@/app/ui/forms/button/button";
-import { ButtonTypes } from "@/app/types/Forms";
+import ApplicateButton from "@/app/ui/noticeboard/applyToNoticeButton/applyToNoticeButton";
 
 export default async function Page({
   searchParams,
@@ -59,10 +58,9 @@ export default async function Page({
               <p className={styles.notice__description}>{notice.description}</p>
               <div className={styles.notice__actions}>
                 {/* TODO: make button visible only for users with type "petsitter" */}
-                <Button
-                  type={ButtonTypes.BUTTON}
-                  title="Zgłoś się"
-                  label="Zgłoś się"
+                <ApplicateButton
+                  noticeTitle={notice.title}
+                  receiverId={notice.ownerId}
                 />
               </div>
             </article>
