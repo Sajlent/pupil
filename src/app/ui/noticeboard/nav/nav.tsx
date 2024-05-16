@@ -58,6 +58,14 @@ export default function Nav() {
                 variant={ButtonVariants.ICON}
               />
             </Link>
+            <Link href={`/noticeboard/messages/${currentUser.uid}`}>
+              <Button
+                title="Wiadomości"
+                type={ButtonTypes.BUTTON}
+                icon="envelope"
+                variant={ButtonVariants.ICON}
+              />
+            </Link>
             <Button
               title="Wyloguj się"
               type={ButtonTypes.BUTTON}

@@ -1,0 +1,25 @@
+.header {
+  margin-bottom: 2rem;
+
+  [role="doc-subtitle"] {
+    font-size: 0.875rem;
+    color: $color-dark-grey;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
+
+.info {
+  text-align: center;
+
+  &__icon {
+    font-size: 3rem;
+
+    &--success {
+      color: $color-green;
+    }
+    &--error {
+      color: $color-red;
+    }
+  }
+}

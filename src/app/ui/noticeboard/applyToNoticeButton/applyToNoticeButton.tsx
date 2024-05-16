@@ -8,11 +8,13 @@ import Button from "@/app/ui/forms/button/button";
 import SendMessageForm from "@/app/ui/noticeboard/sendMessageForm/sendMessageForm.";
 
 interface IApplyToNoticeButtonProps {
+  noticeId: string;
   noticeTitle: string;
   receiverId: string;
 }
 
 const ApplyToNoticeButton: FC<IApplyToNoticeButtonProps> = ({
+  noticeId,
   noticeTitle,
   receiverId,
 }) => {
@@ -35,7 +37,11 @@ const ApplyToNoticeButton: FC<IApplyToNoticeButtonProps> = ({
       label="Zgłoś się"
       onClick={() =>
         setMessageModal(
-          <SendMessageForm title={noticeTitle} receiverId={receiverId} />
+          <SendMessageForm
+            title={noticeTitle}
+            receiverId={receiverId}
+            noticeId={noticeId}
+          />
         )
       }
     />

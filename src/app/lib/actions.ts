@@ -8,6 +8,7 @@ import {
   addDoc,
   collection,
   doc,
+  deleteDoc,
   getDoc,
   getDocs,
   query,
@@ -19,6 +20,7 @@ import { db, auth } from "@/app/scripts/firebase";
 import { FormSchema } from "@/app/types/Forms";
 import { ICityData, IUserData, UserType } from "@/app/types/User";
 import { INoticeData } from "@/app/types/Notice";
+import { IMessageBaseMeta } from "@/app/types/Message";
 import { normalizeFirebaseError } from "@/app/lib/validation";
 
 const userRegistrationSchema = {
@@ -48,6 +50,13 @@ const noticeSchema = {
   ownerId: "",
   startDate: "",
   endDate: "",
+};
+
+const messageSchema = {
+  authorId: "",
+  message: "",
+  noticeId: "",
+  receiverId: "",
 };
 
 export async function registerUser(prevState: any, formData: FormData) {
@@ -143,6 +152,22 @@ export async function getUser(uid: string) {
       const data = userSnap.data();
 
       return data;
+    }
+  } catch (error) {
+    // display error component
+  }
+}
+
+export async function getUserDisplayName(uid: string) {
+  try {
+    // get user from Firebase with auth
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+
+      return data.displayName;
     }
   } catch (error) {
     // display error component
@@ -247,9 +272,8 @@ export async function getPetsittersList(searchParams: {
   if (animalFilter)
     constraints.push(where("animals", "array-contains", animalFilter));
 
-  const q = query(collection(db, "users"), ...constraints);
-
   try {
+    const q = query(collection(db, "users"), ...constraints);
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const petsitterData = doc.data() as IUserData;
@@ -284,13 +308,31 @@ export async function getNoticesList(searchParams: {
     querySnapshot.forEach((doc) => {
       const noticesData = doc.data() as INoticeData;
 
-      data.push(noticesData);
+      data.push({
+        ...noticesData,
+        id: doc.id,
+      });
     });
   } catch (error) {
     console.error(error);
   }
 
   return data;
+}
+
+export async function getNoticeTitle(uid: string) {
+  try {
+    const noticeRef = doc(db, "notices", uid);
+    const noticeSnap = await getDoc(noticeRef);
+
+    if (noticeSnap.exists()) {
+      const data = noticeSnap.data();
+
+      return data.title;
+    }
+  } catch (error) {
+    // display error component
+  }
 }
 
 export async function getCities() {
@@ -309,6 +351,66 @@ export async function getCities() {
   }
 
   return data;
+}
+
+export async function getMessages(uid: string) {
+  const data = [];
+  const constraints = [where("receiverId", "==", uid)];
+
+  try {
+    const q = query(collection(db, "messages"), ...constraints);
+    const querySnapshot = await getDocs(q);
+
+    for await (const doc of querySnapshot.docs) {
+      const messageData = doc.data();
+
+      const authorDisplayName = await getUserDisplayName(messageData.authorId);
+      const noticeTitle = await getNoticeTitle(messageData.noticeId);
+
+      data.push({
+        ...messageData,
+        authorDisplayName,
+        id: doc.id,
+        noticeTitle,
+      });
+    }
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function sendMessage(
+  data: IMessageBaseMeta,
+  prevState: any,
+  formData: FormData
+) {
+  const { authorId, noticeId, receiverId } = data;
+
+  formData.set("authorId", authorId);
+  formData.set("noticeId", noticeId || "");
+  formData.set("receiverId", receiverId);
+
+  const values = mapValuesToSchema(messageSchema, formData);
+
+  try {
+    // Add a new document with a generated id.
+    await addDoc(collection(db, "messages"), values);
+
+    return { ...prevState, success: true, error: false };
+  } catch (error) {
+    console.log(error);
+    return { ...prevState, success: false, error: true };
+  }
+}
+
+export async function rejectMessage(uid: string) {
+  try {
+    await deleteDoc(doc(db, "messages", uid));
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 const mapValuesToSchema = (schema: FormSchema, formData: FormData) => {
