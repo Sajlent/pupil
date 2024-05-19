@@ -12,7 +12,6 @@ export enum MessageType {
 export interface IMessageBaseMeta {
   authorId: string;
   noticeId?: string;
-  message: string;
   receiverId: string;
   status: MessageStatus;
 }

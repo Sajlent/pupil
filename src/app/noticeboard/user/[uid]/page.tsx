@@ -9,6 +9,7 @@ import { getUser } from "@/app/lib/actions";
 import { animalsBadgeSchema } from "@/app/lib/constans";
 import Button from "@/app/ui/forms/button/button";
 import Badge from "@/app/ui/noticeboard/badge/badge";
+import RequestPetCareButton from "@/app/ui/noticeboard/requestPetCareButton/requestPetCareButton";
 import { IUserData } from "@/app/types/User";
 import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
@@ -52,6 +53,12 @@ export default function Page({ params }: { params: { uid: string } }) {
             <dd className={styles.details__content}>{data.summary}</dd>
           </dl>
         </div>
+        {!isCurrentUserProfile && (
+          <RequestPetCareButton
+            receiverDisplayName={data.displayName}
+            receiverId={uid}
+          />
+        )}
       </div>
       {/* column right */}
       <div>

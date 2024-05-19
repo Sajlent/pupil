@@ -9,17 +9,20 @@ import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 import Input from "@/app/ui/forms/input/input";
 
 import styles from "./sendMessageForm.module.scss";
+import { MessageStatus } from "@/app/types/Message";
 
 interface ISendMessageFormProps {
-  noticeId: string;
+  noticeId?: string;
+  receiverDisplayName?: string;
   receiverId: string;
-  title: string;
+  title?: string;
 }
 
 const initialState: any = {};
 
 const SendMessageForm: FC<ISendMessageFormProps> = ({
   noticeId,
+  receiverDisplayName,
   receiverId,
   title,
 }) => {
@@ -28,6 +31,7 @@ const SendMessageForm: FC<ISendMessageFormProps> = ({
     authorId: currentUser?.uid || "",
     receiverId,
     noticeId,
+    status: MessageStatus.PENDING,
   });
   const [status, formAction] = useFormState(sendMessageWithIds, initialState);
 
@@ -38,7 +42,7 @@ const SendMessageForm: FC<ISendMessageFormProps> = ({
           className={`${styles.info__icon} ${styles["info__icon--success"]} lnr lnr-checkmark-circle`}
         />
         <h3>Wiadomość wysłana poprawnie!</h3>
-        <p>Oczekuj na akceptację właściciela.</p>
+        <p>Oczekuj na akceptację adresata.</p>
       </div>
     );
   }
@@ -58,8 +62,20 @@ const SendMessageForm: FC<ISendMessageFormProps> = ({
   return (
     <section>
       <header className={styles.header}>
-        <p role="doc-subtitle">Zgłaszasz się na ogłoszenie:</p>
-        <h3>{title}</h3>
+        {noticeId && (
+          <>
+            <p role="doc-subtitle">Zgłaszasz się na ogłoszenie:</p>
+            <h3>{title}</h3>
+          </>
+        )}
+        {receiverDisplayName && (
+          <>
+            <p role="doc-subtitle">
+              Wysyłasz prośbę o możliwość opieki do petsittera:
+            </p>
+            <h3>{receiverDisplayName}</h3>
+          </>
+        )}
       </header>
       <form action={formAction}>
         <fieldset>

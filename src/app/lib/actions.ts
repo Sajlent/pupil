@@ -27,6 +27,7 @@ import {
   MessageStatus,
 } from "@/app/types/Message";
 import { normalizeFirebaseError } from "@/app/lib/validation";
+import { revalidatePath } from "next/cache";
 
 const userRegistrationSchema = {
   email: "",
@@ -390,7 +391,7 @@ export async function getMessages(uid: string) {
           authorEmail,
           id: doc.id,
           noticeTitle,
-        });
+        } as IMessageData);
       } else if (authorId === uid) {
         data.sent.push({
           ...messageData,
@@ -398,7 +399,7 @@ export async function getMessages(uid: string) {
           authorEmail,
           id: doc.id,
           noticeTitle,
-        });
+        } as IMessageData);
       }
     }
 
@@ -413,18 +414,20 @@ export async function sendMessage(
   prevState: any,
   formData: FormData
 ) {
-  const { authorId, noticeId, receiverId } = data;
+  const { authorId, noticeId, receiverId, status } = data;
 
   formData.set("authorId", authorId);
   formData.set("noticeId", noticeId || "");
   formData.set("receiverId", receiverId);
-  formData.set("status", MessageStatus.PENDING);
+  formData.set("status", status);
 
   const values = mapValuesToSchema(messageSchema, formData);
 
   try {
     // Add a new document with a generated id.
     await addDoc(collection(db, "messages"), values);
+
+    revalidatePath("/noticeboard/messages");
 
     return { ...prevState, success: true, error: false };
   } catch (error) {

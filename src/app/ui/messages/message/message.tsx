@@ -52,12 +52,14 @@ const Message: FC<IMessageProps> = ({
             <p role="doc-subtitle">{noticeTitle}</p>
           </>
         )}
-        <p>
-          od: {/* TODO: Link only if petsitter is an author */}
-          <Link href={`/noticeboard/user/${authorId}`}>
-            {authorDisplayName}
-          </Link>
-        </p>
+        {messageType === MessageType.RECEIVED && (
+          <p>
+            od: {/* TODO: Link only if petsitter is an author */}
+            <Link href={`/noticeboard/user/${authorId}`}>
+              {authorDisplayName}
+            </Link>
+          </p>
+        )}
         <p>{message}</p>
       </div>
       <div className={styles.actions}>
