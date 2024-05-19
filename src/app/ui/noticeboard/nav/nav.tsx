@@ -11,6 +11,7 @@ import Button from "@/app/ui/forms/button/button";
 import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
 import styles from "./nav.module.scss";
+import { UserType } from "@/app/types/User";
 
 const navLinks = [
   { name: "Strona główna", href: "/noticeboard" },
@@ -50,14 +51,16 @@ export default function Nav() {
               {currentUser.displayName}
               <span className={styles.user__type}>{currentUser.type}</span>
             </span>
-            <Link href={`/noticeboard/user/${currentUser.uid}`}>
-              <Button
-                title="Profil"
-                type={ButtonTypes.BUTTON}
-                icon="user"
-                variant={ButtonVariants.ICON}
-              />
-            </Link>
+            {currentUser.type === UserType.PETSITTER && (
+              <Link href={`/noticeboard/user/${currentUser.uid}`}>
+                <Button
+                  title="Profil"
+                  type={ButtonTypes.BUTTON}
+                  icon="user"
+                  variant={ButtonVariants.ICON}
+                />
+              </Link>
+            )}
             <Link href={`/noticeboard/messages/${currentUser.uid}`}>
               <Button
                 title="Wiadomości"

@@ -11,6 +11,7 @@ import {
   deleteDoc,
   getDoc,
   getDocs,
+  or,
   query,
   setDoc,
   where,
@@ -20,7 +21,11 @@ import { db, auth } from "@/app/scripts/firebase";
 import { FormSchema } from "@/app/types/Forms";
 import { ICityData, IUserData, UserType } from "@/app/types/User";
 import { INoticeData } from "@/app/types/Notice";
-import { IMessageBaseMeta } from "@/app/types/Message";
+import {
+  IMessageBaseMeta,
+  IMessageData,
+  MessageStatus,
+} from "@/app/types/Message";
 import { normalizeFirebaseError } from "@/app/lib/validation";
 
 const userRegistrationSchema = {
@@ -57,6 +62,7 @@ const messageSchema = {
   message: "",
   noticeId: "",
   receiverId: "",
+  status: MessageStatus.PENDING,
 };
 
 export async function registerUser(prevState: any, formData: FormData) {
@@ -83,6 +89,7 @@ export async function registerUser(prevState: any, formData: FormData) {
         // after creating new user, save his additional data in users collection
         await setDoc(doc(db, "users", user.uid), {
           displayName: values.displayName,
+          email: values.email,
           type: values.type,
         });
 
@@ -158,7 +165,7 @@ export async function getUser(uid: string) {
   }
 }
 
-export async function getUserDisplayName(uid: string) {
+export async function getUserContactInfo(uid: string) {
   try {
     // get user from Firebase with auth
     const userRef = doc(db, "users", uid);
@@ -166,8 +173,9 @@ export async function getUserDisplayName(uid: string) {
 
     if (userSnap.exists()) {
       const data = userSnap.data();
+      const { displayName, email } = data || {};
 
-      return data.displayName;
+      return { displayName, email };
     }
   } catch (error) {
     // display error component
@@ -354,25 +362,44 @@ export async function getCities() {
 }
 
 export async function getMessages(uid: string) {
-  const data = [];
-  const constraints = [where("receiverId", "==", uid)];
+  const data: { sent: IMessageData[]; received: IMessageData[] } = {
+    sent: [],
+    received: [],
+  };
+  const constraints = [
+    where("authorId", "==", uid),
+    where("receiverId", "==", uid),
+  ];
 
   try {
-    const q = query(collection(db, "messages"), ...constraints);
+    const q = query(collection(db, "messages"), or(...constraints));
     const querySnapshot = await getDocs(q);
 
     for await (const doc of querySnapshot.docs) {
-      const messageData = doc.data();
+      const messageData = doc.data() as IMessageBaseMeta;
+      const { authorId, noticeId, receiverId } = messageData;
 
-      const authorDisplayName = await getUserDisplayName(messageData.authorId);
-      const noticeTitle = await getNoticeTitle(messageData.noticeId);
+      const { displayName: authorDisplayName, email: authorEmail } =
+        (await getUserContactInfo(authorId)) || {};
+      const noticeTitle = noticeId && (await getNoticeTitle(noticeId));
 
-      data.push({
-        ...messageData,
-        authorDisplayName,
-        id: doc.id,
-        noticeTitle,
-      });
+      if (receiverId === uid) {
+        data.received.push({
+          ...messageData,
+          authorDisplayName,
+          authorEmail,
+          id: doc.id,
+          noticeTitle,
+        });
+      } else if (authorId === uid) {
+        data.sent.push({
+          ...messageData,
+          authorDisplayName,
+          authorEmail,
+          id: doc.id,
+          noticeTitle,
+        });
+      }
     }
 
     return data;
@@ -391,6 +418,7 @@ export async function sendMessage(
   formData.set("authorId", authorId);
   formData.set("noticeId", noticeId || "");
   formData.set("receiverId", receiverId);
+  formData.set("status", MessageStatus.PENDING);
 
   const values = mapValuesToSchema(messageSchema, formData);
 
@@ -405,9 +433,22 @@ export async function sendMessage(
   }
 }
 
-export async function rejectMessage(uid: string) {
+export async function rejectOffer(uid: string) {
+  // TODO: Maybe add rejected status instead of deleting message from database?
   try {
     await deleteDoc(doc(db, "messages", uid));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function acceptOffer(uid: string) {
+  const acceptedField = { accepted: true };
+
+  try {
+    const messagesRef = doc(db, "messages", uid);
+
+    await setDoc(messagesRef, acceptedField, { merge: true });
   } catch (error) {
     console.error(error);
   }

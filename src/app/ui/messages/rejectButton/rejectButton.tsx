@@ -20,9 +20,7 @@ const RejectButton: FC<IRejectButtonProps> = ({
       variant={ButtonVariants.TERTIARY}
       title="Odrzuć"
       label="Odrzuć"
-      onClick={() => {
-        rejectMessageHandler(messageId);
-      }}
+      onClick={() => rejectMessageHandler(messageId)}
     />
   );
 };
