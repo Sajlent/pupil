@@ -26,7 +26,7 @@ const SendMessageForm: FC<ISendMessageFormProps> = ({
   receiverId,
   title,
 }) => {
-  const { currentUser } = useAuthContext();
+  const { currentUser, setCurrentUser } = useAuthContext();
   const sendMessageWithIds = sendMessage.bind(null, {
     authorId: currentUser?.uid || "",
     receiverId,
@@ -36,6 +36,20 @@ const SendMessageForm: FC<ISendMessageFormProps> = ({
   const [status, formAction] = useFormState(sendMessageWithIds, initialState);
 
   if (status.success) {
+    // Optimistic update
+    if (
+      noticeId &&
+      Array.isArray(currentUser?.offerHistory) &&
+      !currentUser.offerHistory.includes(noticeId)
+    ) {
+      const updatedHistory = [...currentUser.offerHistory, noticeId];
+
+      setCurrentUser({
+        ...currentUser,
+        offerHistory: updatedHistory,
+      });
+    }
+
     return (
       <div className={styles.info}>
         <i

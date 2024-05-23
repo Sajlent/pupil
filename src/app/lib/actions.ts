@@ -15,6 +15,8 @@ import {
   query,
   setDoc,
   where,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db, auth } from "@/app/scripts/firebase";
@@ -91,6 +93,7 @@ export async function registerUser(prevState: any, formData: FormData) {
         await setDoc(doc(db, "users", user.uid), {
           displayName: values.displayName,
           email: values.email,
+          offerHistory: [],
           type: values.type,
         });
 
@@ -210,6 +213,7 @@ export async function updateUserProfile(
     }
   } catch (error) {
     console.log(error);
+    return { ...prevState, error: true };
   }
 
   return { ...prevState, success: true };
@@ -427,13 +431,24 @@ export async function sendMessage(
     // Add a new document with a generated id.
     await addDoc(collection(db, "messages"), values);
 
-    revalidatePath("/noticeboard/messages");
+    // Add message to offer history, so petsitter won't answer to same notice twice
+    if (noticeId) addToOfferHistory(authorId, noticeId);
+
+    // revalidatePath("/noticeboard/notices");
 
     return { ...prevState, success: true, error: false };
   } catch (error) {
     console.log(error);
     return { ...prevState, success: false, error: true };
   }
+}
+
+async function addToOfferHistory(userId: string, noticeId: string) {
+  const userRef = doc(db, "users", userId);
+
+  await updateDoc(userRef, {
+    offerHistory: arrayUnion(noticeId),
+  });
 }
 
 export async function rejectOffer(uid: string) {
@@ -446,12 +461,10 @@ export async function rejectOffer(uid: string) {
 }
 
 export async function acceptOffer(uid: string) {
-  const acceptedField = { accepted: true };
-
   try {
     const messagesRef = doc(db, "messages", uid);
 
-    await setDoc(messagesRef, acceptedField, { merge: true });
+    await updateDoc(messagesRef, { status: "accepted" });
   } catch (error) {
     console.error(error);
   }

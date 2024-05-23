@@ -14,6 +14,11 @@
     background-color: $color-dark-teal;
   }
 
+  &:disabled {
+    background-color: $color-grey;
+    cursor: default;
+  }
+
   &--secondary {
     display: block;
     width: 100%;

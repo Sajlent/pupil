@@ -9,6 +9,7 @@ interface IButtonProps {
   title: string;
   label?: string;
   icon?: string;
+  disabled?: boolean;
   variant?: ButtonVariants;
   additionalStyles?: string;
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
@@ -19,6 +20,7 @@ const Button: FC<IButtonProps> = ({
   type,
   label = null,
   icon = null,
+  disabled = false,
   variant = ButtonVariants.PRIMARY,
   additionalStyles = "",
   onClick,
@@ -32,6 +34,7 @@ const Button: FC<IButtonProps> = ({
       className={`${styles.button} ${variantClass} ${additionalStyles}`}
       title={title}
       type={type}
+      disabled={disabled}
       onClick={onClick}
     >
       {icon && <i className={`lnr lnr-${icon}`} />}

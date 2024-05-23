@@ -10,7 +10,7 @@ import { animalsBadgeSchema } from "@/app/lib/constans";
 import Button from "@/app/ui/forms/button/button";
 import Badge from "@/app/ui/noticeboard/badge/badge";
 import RequestPetCareButton from "@/app/ui/noticeboard/requestPetCareButton/requestPetCareButton";
-import { IUserData } from "@/app/types/User";
+import { IUserData, UserType } from "@/app/types/User";
 import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
 import styles from "./user.module.scss";
@@ -53,7 +53,7 @@ export default function Page({ params }: { params: { uid: string } }) {
             <dd className={styles.details__content}>{data.summary}</dd>
           </dl>
         </div>
-        {!isCurrentUserProfile && (
+        {!isCurrentUserProfile && currentUser.type === UserType.PETOWNER && (
           <RequestPetCareButton
             receiverDisplayName={data.displayName}
             receiverId={uid}

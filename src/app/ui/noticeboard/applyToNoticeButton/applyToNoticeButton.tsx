@@ -1,11 +1,12 @@
 "use client";
 
-import { FC, ReactElement, useCallback } from "react";
+import { FC, ReactElement, useCallback, useEffect } from "react";
 
-import { useModalContext } from "@/app/providers";
+import { useAuthContext, useModalContext } from "@/app/providers";
 import { ButtonTypes } from "@/app/types/Forms";
 import Button from "@/app/ui/forms/button/button";
-import SendMessageForm from "@/app/ui/noticeboard/sendMessageForm/sendMessageForm.";
+import SendMessageForm from "@/app/ui/noticeboard/sendMessageForm/sendMessageForm";
+import { UserType } from "@/app/types/User";
 
 interface IApplyToNoticeButtonProps {
   noticeId: string;
@@ -18,7 +19,11 @@ const ApplyToNoticeButton: FC<IApplyToNoticeButtonProps> = ({
   noticeTitle,
   receiverId,
 }) => {
+  const { currentUser } = useAuthContext();
   const { setModal } = useModalContext();
+  const { type: userType, offerHistory } = currentUser || {};
+  const alreadySent =
+    Array.isArray(offerHistory) && offerHistory.includes(noticeId);
 
   const setMessageModal = useCallback(
     (content: ReactElement) => {
@@ -30,11 +35,14 @@ const ApplyToNoticeButton: FC<IApplyToNoticeButtonProps> = ({
     [setModal]
   );
 
+  if (userType !== UserType.PETSITTER) return null;
+
   return (
     <Button
       type={ButtonTypes.BUTTON}
       title="Zgłoś się"
       label="Zgłoś się"
+      disabled={alreadySent}
       onClick={() =>
         setMessageModal(
           <SendMessageForm

@@ -17,12 +17,14 @@ import Modal from "./ui/modal/modal";
 interface ICurrentUser {
   email: string | null;
   displayName: string | null;
+  offerHistory: string[];
   uid: string;
   type: UserType;
 }
 
 interface IAuthContext {
   currentUser: ICurrentUser | null;
+  setCurrentUser: (user: ICurrentUser) => void;
 }
 
 interface INotification {
@@ -46,6 +48,7 @@ interface IModalContext {
 
 const AuthContext = createContext<IAuthContext>({
   currentUser: null,
+  setCurrentUser: () => {},
 });
 
 const NotificationContext = createContext<INotificationContext>({
@@ -88,6 +91,7 @@ export function Providers({ children }: PropsWithChildren) {
           setCurrentUser({
             email,
             displayName: userData.displayName,
+            offerHistory: userData.offerHistory,
             uid,
             type: userData.type,
           });
@@ -100,7 +104,6 @@ export function Providers({ children }: PropsWithChildren) {
     } else {
       // User is signed out
       // ...
-      console.log("signed out in context");
     }
   });
 
@@ -108,6 +111,7 @@ export function Providers({ children }: PropsWithChildren) {
     <AuthContext.Provider
       value={{
         currentUser,
+        setCurrentUser,
       }}
     >
       <NotificationContext.Provider value={{ notification, setNotification }}>

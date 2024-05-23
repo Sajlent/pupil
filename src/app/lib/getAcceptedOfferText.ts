@@ -12,12 +12,12 @@ const getAcceptedOfferText = (
     userType === UserType.PETOWNER &&
     messageType === MessageType.SENT
   ) {
-    return "KOMUNIKAT DLA ZAAKCEPTOWANEJ OFERTY WYSŁANEJ Z PROFILU PETSITTERA.";
+    return `Petsitter zaakceptował Twoją ofertę. Skontaktuj się z nim pod adresem: ${contactEmail}`;
   } else if (
     userType === UserType.PETSITTER &&
     messageType === MessageType.RECEIVED
   ) {
-    return "KOMUNIKAT DLA ZAAKCEPTOWANEJ OFERTY WYSŁANEJ Z PROFILU PETSITTERA.";
+    return "Oferta zaakceptowana. Właściciel skontaktuje się z Tobą mailowo w celu ustalenia szczegółów.";
   } else if (
     userType === UserType.PETSITTER &&
     messageType === MessageType.SENT

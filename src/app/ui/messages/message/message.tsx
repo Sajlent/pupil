@@ -16,6 +16,7 @@ import {
 } from "@/app/types/Message";
 
 import styles from "./message.module.scss";
+import { UserType } from "@/app/types/User";
 
 interface IMessageProps {
   data: IMessageData;
@@ -48,16 +49,20 @@ const Message: FC<IMessageProps> = ({
       <div>
         {noticeTitle && (
           <>
-            <h2>Odpowiedź na Twoje ogłoszenie</h2>
+            <h2>Odpowiedź na ogłoszenie</h2>
             <p role="doc-subtitle">{noticeTitle}</p>
           </>
         )}
         {messageType === MessageType.RECEIVED && (
           <p>
-            od: {/* TODO: Link only if petsitter is an author */}
-            <Link href={`/noticeboard/user/${authorId}`}>
-              {authorDisplayName}
-            </Link>
+            od:{" "}
+            {currentUser.type === UserType.PETOWNER ? (
+              <Link href={`/noticeboard/user/${authorId}`}>
+                {authorDisplayName}
+              </Link>
+            ) : (
+              <>{authorDisplayName}</>
+            )}
           </p>
         )}
         <p>{message}</p>

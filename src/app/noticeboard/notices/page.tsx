@@ -57,8 +57,6 @@ export default async function Page({
               </div>
               <p className={styles.notice__description}>{notice.description}</p>
               <div className={styles.notice__actions}>
-                {/* TODO: make button visible only for users with type "petsitter" */}
-                {/* TODO: check if user had already applicated to this notice & disable button if he did */}
                 <ApplicateButton
                   noticeId={notice.id}
                   noticeTitle={notice.title}

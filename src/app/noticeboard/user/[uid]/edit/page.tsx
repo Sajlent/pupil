@@ -34,8 +34,13 @@ export default function Page({ params }: { params: { uid: string } }) {
         text: "Pomyślnie zapisano dane profilowe.",
         type: NotificationTypes.SUCCESS,
       });
+    } else if (profileDataStatus.error) {
+      setNotification({
+        text: "Wystąpił nieoczekiwany błąd.",
+        type: NotificationTypes.ERROR,
+      });
     }
-  }, [profileDataStatus]);
+  }, [profileDataStatus, setNotification]);
 
   getUser(uid).then((user) => {
     if (user && !data) {
