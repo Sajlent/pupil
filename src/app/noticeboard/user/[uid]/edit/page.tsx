@@ -12,6 +12,7 @@ import { ButtonTypes, NotificationTypes } from "@/app/types/Forms";
 import Input from "@/app/ui/forms/input/input";
 import Select from "@/app/ui/forms/select/select";
 import UploadForm from "@/app/ui/noticeboard/uploadForm/uploadForm";
+import Loader from "@/app/ui/forms/loader/loader";
 import { IUserData } from "@/app/types/User";
 
 import styles from "../user.module.scss";
@@ -131,6 +132,7 @@ export default function Page({ params }: { params: { uid: string } }) {
           label="Zapisz zmiany"
           title="Zapisz zmiany"
         />
+        <Loader />
       </form>
       <UploadForm uid={uid} />
     </section>

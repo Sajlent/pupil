@@ -11,6 +11,7 @@ import Select from "@/app/ui/forms/select/select";
 import Button from "@/app/ui/forms/button/button";
 import { ButtonTypes, NotificationTypes } from "@/app/types/Forms";
 import Datepicker from "@/app/ui/forms/datepicker/datepicker";
+import Loader from "@/app/ui/forms/loader/loader";
 
 import styles from "../notices.module.scss";
 
@@ -29,7 +30,7 @@ export default function Page() {
         type: NotificationTypes.SUCCESS,
       });
     }
-  }, [status]);
+  }, [setNotification, status]);
 
   return (
     <section className={styles.root}>
@@ -81,6 +82,7 @@ export default function Page() {
           label="Dodaj ogłoszenie"
           title="Dodaj ogłoszenie"
         />
+        <Loader />
       </form>
     </section>
   );
