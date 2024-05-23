@@ -69,7 +69,7 @@ const messageSchema = {
 };
 
 export async function registerUser(prevState: any, formData: FormData) {
-  let state = { error: false, message: "" };
+  let state = { success: false, error: false, message: "" };
 
   try {
     // get data filled in registration form
@@ -82,7 +82,11 @@ export async function registerUser(prevState: any, formData: FormData) {
       typeof values.password !== "string" ||
       !values.password.length
     )
-      return { error: true, message: "Proszę podać adres e-mail oraz hasło" };
+      return {
+        success: false,
+        error: true,
+        message: "Proszę podać adres e-mail oraz hasło",
+      };
 
     // send basic user credentials (email & password) to Firebase
     await createUserWithEmailAndPassword(auth, values.email, values.password)
@@ -97,10 +101,15 @@ export async function registerUser(prevState: any, formData: FormData) {
           type: values.type,
         });
 
-        state = { error: false, message: "Pomyślnie założono konto." };
+        state = {
+          success: true,
+          error: false,
+          message: "Pomyślnie założono konto.",
+        };
       })
       .catch((error) => {
         state = {
+          success: false,
           error: true,
           message: normalizeFirebaseError(error),
         };
@@ -108,8 +117,9 @@ export async function registerUser(prevState: any, formData: FormData) {
   } catch (error) {
     // pass error message to display on form
     state = {
+      success: false,
       error: true,
-      message: "Wystąpił błąd.",
+      message: "Wystąpił błąd. Prosimy spróbować później.",
     };
   }
 

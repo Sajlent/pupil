@@ -6,6 +6,7 @@ import { saveToBucket } from "@/app/lib/actions";
 import Button from "@/app/ui/forms/button/button";
 import { ButtonTypes, NotificationTypes } from "@/app/types/Forms";
 import Input from "@/app/ui/forms/input/input";
+import Loader from "@/app/ui/forms/loader/loader";
 
 interface IUploadFormProps {
   uid: string;
@@ -31,7 +32,7 @@ const UploadForm: FC<IUploadFormProps> = ({ uid }) => {
         type: NotificationTypes.SUCCESS,
       });
     }
-  }, [uploadFormStatus]);
+  }, [setNotification, uploadFormStatus]);
 
   return (
     <form action={uploadFormAction}>
@@ -50,6 +51,8 @@ const UploadForm: FC<IUploadFormProps> = ({ uid }) => {
         label={"Zapisz zdjęcie"}
         title="Zapisz zdjęcie"
       />
+
+      <Loader />
     </form>
   );
 };

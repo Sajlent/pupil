@@ -4,12 +4,13 @@ import { useFormState } from "react-dom";
 import { useAuthContext } from "@/app/providers";
 import { sendMessage } from "@/app/lib/actions";
 
-import Button from "@/app/ui/forms/button/button";
 import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
+import { MessageStatus } from "@/app/types/Message";
 import Input from "@/app/ui/forms/input/input";
+import Button from "@/app/ui/forms/button/button";
+import Loader from "@/app/ui/forms/loader/loader";
 
 import styles from "./sendMessageForm.module.scss";
-import { MessageStatus } from "@/app/types/Message";
 
 interface ISendMessageFormProps {
   noticeId?: string;
@@ -109,6 +110,7 @@ const SendMessageForm: FC<ISendMessageFormProps> = ({
           label="Wyślij wiadomość"
           title="Wyślij"
         />
+        <Loader />
       </form>
     </section>
   );
