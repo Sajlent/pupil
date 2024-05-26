@@ -98,6 +98,7 @@ export async function registerUser(prevState: any, formData: FormData) {
           displayName: values.displayName,
           email: values.email,
           offerHistory: [],
+          rating: [],
           type: values.type,
         });
 
@@ -459,6 +460,20 @@ async function addToOfferHistory(userId: string, noticeId: string) {
   await updateDoc(userRef, {
     offerHistory: arrayUnion(noticeId),
   });
+}
+
+export async function addRatingPoints(userId: string, points: number[]) {
+  const userRef = doc(db, "users", userId);
+
+  try {
+    await updateDoc(userRef, {
+      rating: points,
+    });
+
+    return { success: true, error: false };
+  } catch (error) {
+    return { success: false, error: true };
+  }
 }
 
 export async function rejectOffer(uid: string) {

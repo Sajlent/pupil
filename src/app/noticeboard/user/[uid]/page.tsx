@@ -10,6 +10,7 @@ import { animalsBadgeSchema } from "@/app/lib/constans";
 import Button from "@/app/ui/forms/button/button";
 import Badge from "@/app/ui/noticeboard/badge/badge";
 import RequestPetCareButton from "@/app/ui/noticeboard/requestPetCareButton/requestPetCareButton";
+import Rating from "@/app/ui/noticeboard/rating/rating";
 import { IUserData, UserType } from "@/app/types/User";
 import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
 
@@ -52,6 +53,14 @@ export default function Page({ params }: { params: { uid: string } }) {
             <dt className={styles.details__title}>Kilka słów o mnie</dt>
             <dd className={styles.details__content}>{data.summary}</dd>
           </dl>
+          <h3 className={styles.details__title}>Ocena</h3>
+          <Rating
+            userId={uid}
+            active={
+              !isCurrentUserProfile && currentUser.type === UserType.PETOWNER
+            }
+            ratingPoints={data.rating}
+          />
         </div>
         {!isCurrentUserProfile && currentUser.type === UserType.PETOWNER && (
           <RequestPetCareButton

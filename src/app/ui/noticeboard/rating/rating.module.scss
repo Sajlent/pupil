@@ -1,0 +1,17 @@
+.root {
+  margin-top: 0.5rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: $color-grey;
+
+  &--golden {
+    font-weight: bold;
+    color: gold;
+  }
+
+  &--active {
+    cursor: pointer;
+  }
+}
