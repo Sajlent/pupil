@@ -1,0 +1,67 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 4rem;
+  max-width: 75%;
+  margin: 2rem auto;
+}
+
+.header {
+  grid-column: 1 / -1;
+}
+
+.aside {
+  max-width: 50%;
+  margin: 2rem 0;
+}
+
+.notice {
+  padding: 1rem;
+  margin: 2rem 0;
+  border: 1px solid $color-grey;
+  border-radius: 1rem;
+
+  &__description {
+    font-size: 0.875rem;
+  }
+
+  &__info {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: center;
+    background-color: black;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: 1px solid;
+    border-radius: 1rem;
+
+    > i {
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__actions {
+    text-align: right;
+    margin: 1rem 0 0;
+  }
+}
+
+.heading {
+  margin: 2rem 0 1.5rem;
+}
+
+.form {
+  position: relative;
+
+  &__fieldset {
+    margin: 2rem 0;
+  }
+}

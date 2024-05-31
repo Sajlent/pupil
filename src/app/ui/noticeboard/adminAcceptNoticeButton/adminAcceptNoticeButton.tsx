@@ -7,53 +7,38 @@ import { ButtonTypes } from "@/app/types/Forms";
 import Button from "@/app/ui/forms/button/button";
 import SendMessageForm from "@/app/ui/noticeboard/sendMessageForm/sendMessageForm";
 import { UserType } from "@/app/types/User";
+import { acceptNotice } from "@/app/lib/actions";
 
-interface IApplyToNoticeButtonProps {
+interface IadminAcceptNoticeButtonProps {
   noticeId: string;
   noticeTitle: string;
   receiverId: string;
+  handleClick: any;
 }
 
-const ApplyToNoticeButton: FC<IApplyToNoticeButtonProps> = ({
+const adminAcceptNoticeButton: FC<IadminAcceptNoticeButtonProps> = ({
   noticeId,
   noticeTitle,
   receiverId,
+  handleClick
 }) => {
   const { currentUser } = useAuthContext();
-  const { setModal } = useModalContext();
   const { type: userType, offerHistory } = currentUser || {};
+  
+  if (userType !== UserType.ADMIN) return null;
+
   const alreadySent =
     Array.isArray(offerHistory) && offerHistory.includes(noticeId);
-
-  const setMessageModal = useCallback(
-    (content: ReactElement) => {
-      setModal({
-        isOpen: true,
-        content: content,
-      });
-    },
-    [setModal]
-  );
-
-  if (userType !== UserType.PETSITTER) return null;
-
+ 
   return (
     <Button
       type={ButtonTypes.BUTTON}
       title="Akceptuj"
       label="Akceptuj"
       disabled={alreadySent}
-      onClick={() =>
-        setMessageModal(
-          <SendMessageForm
-            title={noticeTitle}
-            receiverId={receiverId}
-            noticeId={noticeId}
-          />
-        )
-      }
+      onClick={() =>handleClick(noticeId)}
     />
   );
 };
 
-export default ApplyToNoticeButton;
+export default adminAcceptNoticeButton;

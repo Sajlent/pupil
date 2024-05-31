@@ -58,6 +58,7 @@ const noticeSchema = {
   ownerId: "",
   startDate: "",
   endDate: "",
+  status: ""
 };
 
 const messageSchema = {
@@ -259,6 +260,7 @@ export async function addNotice(
 ) {
   formData.set("ownerId", uid);
   formData.set("createdAt", new Date().getTime().toString());
+  formData.set("status", "notaccepted"); // Set the status field in the formData
 
   const values = mapValuesToSchema(noticeSchema, formData);
   const { city } = values;
@@ -315,15 +317,22 @@ export async function getPetsittersList(searchParams: {
 
 export async function getNoticesList(searchParams: {
   [key: string]: string | string[] | undefined;
-}) {
+}, onlyNotAccepted?: boolean) {
   const data: INoticeData[] = [];
   const constraints = [];
   const { city: cityFilter, animal: animalFilter } = searchParams;
 
   if (cityFilter) constraints.push(where("city", "==", cityFilter));
+  
   if (animalFilter)
     constraints.push(where("animals", "array-contains", animalFilter));
 
+  if (onlyNotAccepted) {
+    constraints.push(where("status", "==", "notaccepted"));
+  } else {
+    constraints.push(where("status", "!=", "notaccepted"));
+  }
+  
   const q = query(collection(db, "notices"), ...constraints);
 
   try {
@@ -341,6 +350,20 @@ export async function getNoticesList(searchParams: {
   }
 
   return data;
+}
+
+export async function acceptNotice(uid: string) {
+  try {
+    const noticeRef = doc(db, "notices", uid);
+    await updateDoc(noticeRef, {
+        status: "approved"
+    });
+    console.log('succes accepting note' + uid);
+  } catch (error) {
+      console.log(error);
+      return false;
+  }
+  return true;
 }
 
 export async function getNoticeTitle(uid: string) {

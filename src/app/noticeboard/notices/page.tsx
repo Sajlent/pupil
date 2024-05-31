@@ -13,6 +13,7 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const data = await getNoticesList(searchParams);
+
   const citiesOptions = await getCities();
 
   const pageFilters = [

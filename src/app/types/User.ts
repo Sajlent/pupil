@@ -1,6 +1,7 @@
 export enum UserType {
   PETSITTER = "petsitter",
   PETOWNER = "petowner",
+  ADMIN = "admin",
 }
 
 export enum AnimalType {
