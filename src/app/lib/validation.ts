@@ -1,4 +1,5 @@
 import { FirebaseError } from "firebase/app";
+import { DEFAULT_ERROR_MESSAGE } from "@/app/lib/constans";
 
 export const normalizeFirebaseError = (error: unknown) => {
   console.log("error", error);
@@ -15,6 +16,6 @@ export const normalizeFirebaseError = (error: unknown) => {
     case "auth/weak-password":
       return "Hasło powinno składać się z minimum 6 znaków.";
     default:
-      return "Wystąpił błąd.";
+      return DEFAULT_ERROR_MESSAGE;
   }
 };

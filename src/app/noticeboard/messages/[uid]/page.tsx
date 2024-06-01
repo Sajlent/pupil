@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getMessages } from "@/app/lib/actions";
 import MessagesList from "@/app/ui/messages/messagesList/messagesList";
 

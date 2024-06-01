@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 
 import { getUser, updateUserProfile } from "@/app/lib/actions";
-import { animalsOptionsSchema } from "@/app/lib/constans";
+import {
+  DEFAULT_ERROR_MESSAGE,
+  animalsOptionsSchema,
+} from "@/app/lib/constans";
 
 import { useNotificationContext } from "@/app/providers";
 import Button from "@/app/ui/forms/button/button";
@@ -37,17 +40,25 @@ export default function Page({ params }: { params: { uid: string } }) {
       });
     } else if (profileDataStatus.error) {
       setNotification({
-        text: "Wystąpił nieoczekiwany błąd.",
+        text: DEFAULT_ERROR_MESSAGE,
         type: NotificationTypes.ERROR,
       });
     }
   }, [profileDataStatus, setNotification]);
 
-  getUser(uid).then((user) => {
-    if (user && !data) {
-      setData(user as IUserData);
-    }
-  });
+  useEffect(() => {
+    getUser(uid).then((userData) => {
+      if (userData?.status === "error" && userData.message) {
+        setNotification({
+          text: userData.message,
+          type: NotificationTypes.ERROR,
+        });
+      } else if (userData.status === "success" && !data) {
+        setData(userData.data as IUserData);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!data) return null;
 

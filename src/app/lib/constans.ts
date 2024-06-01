@@ -57,3 +57,6 @@ export const animalsOptionsSchema = [
     value: "bird",
   },
 ];
+
+export const DEFAULT_ERROR_MESSAGE =
+  "Wystąpił nieoczekiwany błąd. Prosimy spróbować później.";

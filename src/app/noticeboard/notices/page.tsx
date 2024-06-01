@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getCities, getNoticesList } from "@/app/lib/actions";
 import { animalsOptionsSchema } from "@/app/lib/constans";
 import Filters from "@/app/ui/noticeboard/filters/filters";

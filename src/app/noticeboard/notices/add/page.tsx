@@ -5,7 +5,10 @@ import { useFormState } from "react-dom";
 
 import { useAuthContext, useNotificationContext } from "@/app/providers";
 import { addNotice } from "@/app/lib/actions";
-import { animalsOptionsSchema } from "@/app/lib/constans";
+import {
+  DEFAULT_ERROR_MESSAGE,
+  animalsOptionsSchema,
+} from "@/app/lib/constans";
 import Input from "@/app/ui/forms/input/input";
 import Select from "@/app/ui/forms/select/select";
 import Button from "@/app/ui/forms/button/button";
@@ -28,6 +31,11 @@ export default function Page() {
       setNotification({
         text: "Pomyślnie dodano ogłoszenie.",
         type: NotificationTypes.SUCCESS,
+      });
+    } else if (status.error) {
+      setNotification({
+        text: DEFAULT_ERROR_MESSAGE,
+        type: NotificationTypes.ERROR,
       });
     }
   }, [setNotification, status]);
