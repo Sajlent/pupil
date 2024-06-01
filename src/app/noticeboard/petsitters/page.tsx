@@ -1,12 +1,14 @@
+export const dynamic = "force-dynamic";
+
 import Image from "next/image";
 import Link from "next/link";
 
 import { getCities, getPetsittersList } from "@/app/lib/actions";
 import { animalsOptionsSchema } from "@/app/lib/constans";
 import Filters from "@/app/ui/noticeboard/filters/filters";
+import NoResults from "@/app/ui/noticeboard/noResults/noResults";
 
 import styles from "./petsitters.module.scss";
-import NoResults from "@/app/ui/noticeboard/noResults/noResults";
 
 export default async function Page({
   searchParams,

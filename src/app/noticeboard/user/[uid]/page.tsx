@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useAuthContext } from "@/app/providers";
+import { useAuthContext, useNotificationContext } from "@/app/providers";
 import { getUser } from "@/app/lib/actions";
 import { animalsBadgeSchema } from "@/app/lib/constans";
 import Button from "@/app/ui/forms/button/button";
@@ -12,21 +12,34 @@ import Badge from "@/app/ui/noticeboard/badge/badge";
 import RequestPetCareButton from "@/app/ui/noticeboard/requestPetCareButton/requestPetCareButton";
 import Rating from "@/app/ui/noticeboard/rating/rating";
 import { IUserData, UserType } from "@/app/types/User";
-import { ButtonTypes, ButtonVariants } from "@/app/types/Forms";
+import {
+  ButtonTypes,
+  ButtonVariants,
+  NotificationTypes,
+} from "@/app/types/Forms";
 
 import styles from "./user.module.scss";
 
 export default function Page({ params }: { params: { uid: string } }) {
   const { currentUser } = useAuthContext();
+  const { setNotification } = useNotificationContext();
   const [data, setData] = useState<IUserData | null>(null);
   const uid = params.uid;
   const isCurrentUserProfile = uid === currentUser?.uid;
 
-  getUser(uid).then((user) => {
-    if (user && !data) {
-      setData(user as IUserData);
-    }
-  });
+  useEffect(() => {
+    getUser(uid).then((userData) => {
+      if (userData?.status === "error" && userData.message) {
+        setNotification({
+          text: userData.message,
+          type: NotificationTypes.ERROR,
+        });
+      } else if (userData.status === "success" && !data) {
+        setData(userData.data as IUserData);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!currentUser || !data) return null;
 
