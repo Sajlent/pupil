@@ -40,8 +40,8 @@ const ApplyToNoticeButton: FC<IApplyToNoticeButtonProps> = ({
   return (
     <Button
       type={ButtonTypes.BUTTON}
-      title="Akceptuj"
-      label="Akceptuj"
+      title="Zgłoś się"
+      label="Zgłoś się"
       disabled={alreadySent}
       onClick={() =>
         setMessageModal(

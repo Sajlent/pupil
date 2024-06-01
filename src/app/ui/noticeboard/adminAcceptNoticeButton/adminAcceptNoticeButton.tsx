@@ -26,16 +26,12 @@ const adminAcceptNoticeButton: FC<IadminAcceptNoticeButtonProps> = ({
   const { type: userType, offerHistory } = currentUser || {};
   
   if (userType !== UserType.ADMIN) return null;
-
-  const alreadySent =
-    Array.isArray(offerHistory) && offerHistory.includes(noticeId);
  
   return (
     <Button
       type={ButtonTypes.BUTTON}
       title="Akceptuj"
       label="Akceptuj"
-      disabled={alreadySent}
       onClick={() =>handleClick(noticeId)}
     />
   );
