@@ -167,7 +167,7 @@ export async function authenticate(prevState: any, formData: FormData) {
 export async function getUser(uid: string) {
   try {
     // get user from Firebase with auth
-    const userRef = doc(db, "users", `${uid}1`);
+    const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists()) {
