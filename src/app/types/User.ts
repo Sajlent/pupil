@@ -22,6 +22,7 @@ export interface IUserData {
   lastname: string;
   offerHistory?: string[];
   photo?: string;
+  rating: number[];
   summary: string;
   skills: string;
   type: UserType;

@@ -29,7 +29,7 @@ import {
   MessageStatus,
 } from "@/app/types/Message";
 import { normalizeFirebaseError } from "@/app/lib/validation";
-import { revalidatePath } from "next/cache";
+import { DEFAULT_ERROR_MESSAGE } from "@/app/lib/constans";
 
 const userRegistrationSchema = {
   email: "",
@@ -58,7 +58,7 @@ const noticeSchema = {
   ownerId: "",
   startDate: "",
   endDate: "",
-  status: ""
+  status: "",
 };
 
 const messageSchema = {
@@ -99,6 +99,7 @@ export async function registerUser(prevState: any, formData: FormData) {
           displayName: values.displayName,
           email: values.email,
           offerHistory: [],
+          rating: [],
           type: values.type,
         });
 
@@ -120,7 +121,7 @@ export async function registerUser(prevState: any, formData: FormData) {
     state = {
       success: false,
       error: true,
-      message: "Wystąpił błąd. Prosimy spróbować później.",
+      message: DEFAULT_ERROR_MESSAGE,
     };
   }
 
@@ -158,7 +159,7 @@ export async function authenticate(prevState: any, formData: FormData) {
       });
   } catch (error) {
     // pass error message to display on form
-    state.message = "Wystąpił błąd.";
+    state.message = DEFAULT_ERROR_MESSAGE;
   }
 
   return state;
@@ -173,14 +174,24 @@ export async function getUser(uid: string) {
     if (userSnap.exists()) {
       const data = userSnap.data();
 
-      return data;
+      return { status: "success", data };
+    } else {
+      return {
+        status: "error",
+        message: "Użytkownik nie istnieje w naszym systemie.",
+        data: {},
+      };
     }
   } catch (error) {
-    // display error component
+    return {
+      status: "error",
+      message: DEFAULT_ERROR_MESSAGE,
+      data: {},
+    };
   }
 }
 
-export async function getUserContactInfo(uid: string) {
+async function getUserContactInfo(uid: string) {
   try {
     // get user from Firebase with auth
     const userRef = doc(db, "users", uid);
@@ -193,7 +204,8 @@ export async function getUserContactInfo(uid: string) {
       return { displayName, email };
     }
   } catch (error) {
-    // display error component
+    // internal function - no need to display message
+    return {};
   }
 }
 
@@ -242,13 +254,17 @@ export async function saveToBucket(
   const storage = getStorage();
   const storageRef = ref(storage, `userAvatars/${uid}`);
 
-  uploadBytes(storageRef, file).then(() => {
-    getDownloadURL(ref(storage, `userAvatars/${uid}`)).then((url) => {
-      const usersRef = doc(db, "users", uid);
+  uploadBytes(storageRef, file)
+    .then(() => {
+      getDownloadURL(ref(storage, `userAvatars/${uid}`)).then((url) => {
+        const usersRef = doc(db, "users", uid);
 
-      setDoc(usersRef, { photo: url }, { merge: true });
+        setDoc(usersRef, { photo: url }, { merge: true });
+      });
+    })
+    .catch(() => {
+      return { ...prevState, error: true };
     });
-  });
 
   return { ...prevState, success: true };
 }
@@ -280,7 +296,7 @@ export async function addNotice(
       }
     }
   } catch (error) {
-    console.log(error);
+    return { ...prevState, error: true };
   }
 
   return { ...prevState, success: true };
@@ -315,15 +331,18 @@ export async function getPetsittersList(searchParams: {
   return data;
 }
 
-export async function getNoticesList(searchParams: {
-  [key: string]: string | string[] | undefined;
-}, onlyNotAccepted?: boolean) {
+export async function getNoticesList(
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  },
+  onlyNotAccepted?: boolean
+) {
   const data: INoticeData[] = [];
   const constraints = [];
   const { city: cityFilter, animal: animalFilter } = searchParams;
 
   if (cityFilter) constraints.push(where("city", "==", cityFilter));
-  
+
   if (animalFilter)
     constraints.push(where("animals", "array-contains", animalFilter));
 
@@ -332,7 +351,7 @@ export async function getNoticesList(searchParams: {
   } else {
     constraints.push(where("status", "!=", "notaccepted"));
   }
-  
+
   const q = query(collection(db, "notices"), ...constraints);
 
   try {
@@ -356,17 +375,17 @@ export async function acceptNotice(uid: string) {
   try {
     const noticeRef = doc(db, "notices", uid);
     await updateDoc(noticeRef, {
-        status: "approved"
+      status: "approved",
     });
-    console.log('succes accepting note' + uid);
+    console.log("succes accepting note" + uid);
   } catch (error) {
-      console.log(error);
-      return false;
+    console.log(error);
+    return false;
   }
   return true;
 }
 
-export async function getNoticeTitle(uid: string) {
+async function getNoticeTitle(uid: string) {
   try {
     const noticeRef = doc(db, "notices", uid);
     const noticeSnap = await getDoc(noticeRef);
@@ -377,7 +396,8 @@ export async function getNoticeTitle(uid: string) {
       return data.title;
     }
   } catch (error) {
-    // display error component
+    // internal function - no need to display message
+    return {};
   }
 }
 
@@ -482,6 +502,20 @@ async function addToOfferHistory(userId: string, noticeId: string) {
   await updateDoc(userRef, {
     offerHistory: arrayUnion(noticeId),
   });
+}
+
+export async function addRatingPoints(userId: string, points: number[]) {
+  const userRef = doc(db, "users", userId);
+
+  try {
+    await updateDoc(userRef, {
+      rating: points,
+    });
+
+    return { success: true, error: false };
+  } catch (error) {
+    return { success: false, error: true };
+  }
 }
 
 export async function rejectOffer(uid: string) {

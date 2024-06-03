@@ -17,14 +17,13 @@ const icons = {
 const Toast = () => {
   const { notification, setNotification } = useNotificationContext();
 
-  // TODO: add notification hide after a time
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setNotification(null);
-  //   }, 5000);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (notification) setNotification(null);
+    }, 2000);
 
-  //   return () => clearTimeout(timer);
-  // }, []);
+    return () => clearTimeout(timer);
+  }, [notification, setNotification]);
 
   if (!notification) return null;
 
