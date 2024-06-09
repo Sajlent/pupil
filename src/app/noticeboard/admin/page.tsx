@@ -12,7 +12,6 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-
   const data = await getNoticesList(searchParams, true);
   const citiesOptions = await getCities();
 
@@ -29,18 +28,22 @@ export default async function Page({
     },
   ];
 
-
   return (
     <div className={styles.root}>
-      <header className={styles.header}>
+      <section className={styles.notices__section}>
         <h1>Lista ogłoszeń do akceptacji</h1>
-      </header>
-      <aside className={styles.aside}>
-        <Filters config={pageFilters} />
-      </aside>
-      <section>
+        <div className={styles.aside}>
+          <h2 className={styles.noticeCount}>
+            Liczba ogłoszeń do akceptacji: {data.length}
+          </h2>
+          <Filters config={pageFilters} />
+        </div>
+
         {data.length > 0 ? (
-          <NoticeList elements={data} />
+          <div className={styles.notices__container}>
+            {" "}
+            <NoticeList elements={data} />{" "}
+          </div>
         ) : (
           <NoResults />
         )}

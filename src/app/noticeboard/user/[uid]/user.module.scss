@@ -1,13 +1,24 @@
+@import "../../../styles/breakpoints";
+
 .root {
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-column-gap: 4rem;
   padding-top: 4rem;
+
+  @include responsive(mobileFull) {
+    row-gap: 1rem;
+    margin: 7rem 0;
+    grid-template-columns: 1fr;
+  }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+  @include responsive(mobile) {
+    font-size: 0.75rem;
+  }
 }
 
 .card {
@@ -15,22 +26,40 @@
   margin: 1rem 0;
   border: 1px solid $color-grey;
   border-radius: 1rem;
+  background-color: #ffffff;
 }
 
 .details {
   &__heading {
     font-size: 1.25rem;
     margin-bottom: 1rem;
+    @include responsive(mobile) {
+      font-size: 1rem;
+    }
   }
 
   &__title {
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: bold;
     margin-top: 0.5rem;
+
+    @include responsive(laptop) {
+      font-size: 0.9rem;
+    }
+    @include responsive(mobile) {
+      font-size: 0.8rem;
+    }
   }
 
   &__content {
     margin: 0.5rem;
+    font-size: 0.875rem;
+    @include responsive(laptop) {
+      font-size: 0.8rem;
+    }
+    @include responsive(mobile) {
+      font-size: 0.7rem;
+    }
   }
 
   &__list {
@@ -44,12 +73,32 @@
 .form {
   position: relative;
   padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
+  &__top {
+    display: flex;
+    width: 100%;
+    gap: 3rem;
+    align-items: flex-end;
+
+    @include responsive(mobileFull) {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
   &__fieldset {
     padding: 1rem 2rem;
     margin: 2rem 0;
     border: 1px solid $color-grey;
     border-radius: 1rem;
+    background-color: #ffffff;
+    width: 100%;
+
+    @include responsive(mobileFull) {
+      margin: 0.6rem 0;
+    }
   }
 
   &__legend {
@@ -60,8 +109,13 @@
 
 .section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 4rem;
+  margin-bottom: 4rem;
+  @include responsive(mobileFull) {
+    row-gap: 1rem;
+    margin: 7rem 0;
+  }
 
   > :first-child {
     margin-top: 2rem;

@@ -1,10 +1,13 @@
+@import "../../../styles/breakpoints";
+
 .button {
   background-color: $color-teal;
   color: white;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
-  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  padding: 0.85rem 1rem;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -12,11 +15,21 @@
 
   &:hover {
     background-color: $color-dark-teal;
+    color: #fff;
   }
 
   &:disabled {
     background-color: $color-grey;
     cursor: default;
+  }
+
+  &--active {
+    background-color: #121813;
+    color: #fff;
+  }
+  &--no-active {
+    background-color: #e0fae4;
+    color: $color-dark-grey;
   }
 
   &--secondary {
@@ -42,6 +55,37 @@
 
     &:hover {
       background-color: rgba($color-teal, 0.3);
+      color: #fff;
     }
+  }
+
+  &--image {
+    background-color: transparent;
+    display: flex;
+    padding: 0.5rem;
+    border-radius: 30%;
+
+    &:hover {
+      background-color: #e0fae4;
+      color: #fff;
+    }
+  }
+}
+
+@include responsive(laptop) {
+  .button {
+    font-size: 0.8rem !important;
+  }
+}
+
+@include responsive(tablet) {
+  .button {
+    font-size: 0.7rem !important;
+  }
+}
+
+@include responsive(mobile) {
+  .button {
+    font-size: 0.6rem !important;
   }
 }

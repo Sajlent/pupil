@@ -1,3 +1,5 @@
+@import "../../../styles/breakpoints";
+
 .root {
   margin-top: 0.5rem;
 }
@@ -5,6 +7,14 @@
 .star {
   font-size: 2rem;
   color: $color-grey;
+
+  @include responsive(tablet) {
+    font-size: 1.6rem;
+  }
+
+  @include responsive(mobile) {
+    font-size: 1.4rem;
+  }
 
   &--golden {
     font-weight: bold;

@@ -1,14 +1,28 @@
+@import "../../../styles/breakpoints";
+
 .info {
-  font-weight: bold;
   color: $color-dark-grey;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 
-  & > i {
-    font-size: 4rem;
-    display: block;
-    color: $color-blue;
-    margin-bottom: 1rem;
+  & h1 {
+    font-weight: 500;
+    font-size: 1.2rem;
+    @include responsive(mobile) {
+      font-size: 0.8rem;
+    }
+  }
+
+  & .image {
+    width: auto;
+    @include responsive(mobile) {
+      width: 264px;
+      height: 264px;
+    }
+    @include responsive(tablet) {
+      width: 416px;
+      height: 416px;
+    }
   }
 }

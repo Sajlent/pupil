@@ -1,41 +1,136 @@
-.input {
-  display: block;
+// .input {
+//   display: block;
+//   width: 100%;
+//   margin-bottom: 1.25rem;
+//   padding: 1rem;
+//   border: 1px solid $color-grey;
+//   border-radius: 0.25rem;
+
+//   &:hover {
+//     border-color: black;
+//   }
+
+//   &[type="file"] {
+//     font-size: 0.875rem;
+
+//     &:hover {
+//       cursor: pointer;
+//     }
+
+//     &::file-selector-button {
+//       background-color: $color-teal;
+//       color: white;
+//       padding: 0.75rem 1rem;
+//       border: none;
+//       border-radius: 0.25rem;
+
+//       &:hover {
+//         cursor: pointer;
+//       }
+//     }
+//   }
+// }
+
+// .label {
+//   display: block;
+//   font-size: 0.875rem;
+//   color: $color-dark-grey;
+//   text-align: left;
+//   text-transform: uppercase;
+//   letter-spacing: 1px;
+// }
+
+@import "../../../styles/breakpoints";
+
+.form_input_box {
+  position: relative;
+  padding: 1rem 0;
   width: 100%;
-  margin-bottom: 1.25rem;
-  padding: 1rem;
-  border: 1px solid $color-grey;
-  border-radius: 0.25rem;
+  max-width: 100%;
 
-  &:hover {
-    border-color: black;
-  }
-
-  &[type="file"] {
+  .input {
+    border: none;
+    border: 1px solid $color-grey;
+    border-radius: 8px;
+    color: #333;
+    display: block;
     font-size: 0.875rem;
+    padding: 10px 8px;
+    width: 100%;
+    resize: none;
+    @include responsive(mobile) {
+      font-size: 12px;
+    }
+    &:focus,
+    &:valid,
+    &:placeholder-shown {
+      // border: 1px solid $color-teal;
+      outline: none;
 
+      & + .label {
+        color: $color-teal;
+        font-size: 0.875rem;
+
+        transform: translate(-9px, -6px);
+        z-index: 111;
+
+        @include responsive(mobile) {
+          font-size: 12px;
+        }
+      }
+    }
     &:hover {
-      cursor: pointer;
+      border-color: black;
     }
 
-    &::file-selector-button {
-      background-color: $color-teal;
-      color: white;
-      padding: 0.75rem 1rem;
-      border: none;
-      border-radius: 0.25rem;
+    &[type="file"] {
+      font-size: 0.875rem;
+      background-color: #fff;
+      padding: 1.4rem 1.6rem;
 
+      @include responsive(mobileFull) {
+        font-size: 0.65rem;
+      }
+
+      & + .label {
+        color: $color-teal;
+        font-size: 0.875rem;
+
+        transform: translate(20px, 4px);
+        color: #000;
+        font-weight: 600;
+      }
       &:hover {
         cursor: pointer;
       }
+
+      &::file-selector-button {
+        background-color: $color-teal;
+        color: white;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 0.25rem;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
-}
 
-.label {
-  display: block;
-  font-size: 0.875rem;
-  color: $color-dark-grey;
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  .label {
+    color: #9e9e9e;
+
+    font-size: 0.875rem;
+    font-weight: 100;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    pointer-events: none;
+    transform: translateY(30px);
+
+    @include responsive(mobile) {
+      font-size: 12px;
+    }
+  }
 }
