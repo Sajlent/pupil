@@ -25,7 +25,7 @@ export default function Page() {
       )}
       {type === UserType.ADMIN && (
         <article>
-          <h3>Ogłoszenia do akcpetacji</h3>
+          <h3>Ogłoszenia do akceptacji</h3>
           <p>Zaakceptuj nowe ogłoszenie</p>
           <Link href="/noticeboard/admin">
             <Button type={ButtonTypes.BUTTON} title="Sprawdź" label="Sprawdź" />
