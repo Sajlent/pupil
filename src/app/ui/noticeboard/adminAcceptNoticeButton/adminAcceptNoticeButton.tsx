@@ -18,8 +18,6 @@ interface IadminAcceptNoticeButtonProps {
 
 const adminAcceptNoticeButton: FC<IadminAcceptNoticeButtonProps> = ({
   noticeId,
-  noticeTitle,
-  receiverId,
   handleClick
 }) => {
   const { currentUser } = useAuthContext();
