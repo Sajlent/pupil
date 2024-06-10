@@ -18,7 +18,7 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const data = await getNoticesList(searchParams);
+  const data = await getNoticesList(searchParams, false);
 
   const citiesOptions = await getCities();
 

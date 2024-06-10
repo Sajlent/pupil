@@ -2,9 +2,12 @@
 
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
+import Image from "next/image";
+import Link from "next/link";
 
 import { useAuthContext, useNotificationContext } from "@/app/providers";
 import { addNotice } from "@/app/lib/actions";
+import { navigate } from "@/app/lib/navigate";
 import {
   DEFAULT_ERROR_MESSAGE,
   animalsOptionsSchema,
@@ -15,8 +18,6 @@ import Button from "@/app/ui/forms/button/button";
 import { ButtonTypes, NotificationTypes } from "@/app/types/Forms";
 import Datepicker from "@/app/ui/forms/datepicker/datepicker";
 import Loader from "@/app/ui/forms/loader/loader";
-import Image from "next/image";
-import Link from "next/link";
 
 import styles from "./noticesAdd.module.scss";
 
@@ -34,6 +35,8 @@ export default function Page() {
         text: "Pomyślnie dodano ogłoszenie.",
         type: NotificationTypes.SUCCESS,
       });
+
+      navigate("/noticeboard/notices");
     } else if (status.error) {
       setNotification({
         text: DEFAULT_ERROR_MESSAGE,

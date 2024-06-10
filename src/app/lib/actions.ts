@@ -349,7 +349,7 @@ export async function getNoticesList(
   if (onlyNotAccepted) {
     constraints.push(where("status", "==", "notaccepted"));
   } else {
-    constraints.push(where("status", "!=", "notaccepted"));
+    constraints.push(where("status", "==", "approved"));
   }
 
   const q = query(collection(db, "notices"), ...constraints);
