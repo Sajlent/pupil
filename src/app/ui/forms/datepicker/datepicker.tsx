@@ -30,7 +30,7 @@ const Datepicker: FC<IDatepickerProps> = ({
   required = false,
 }) => {
   return (
-    <>
+    <div className={styles.date__container}>
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
@@ -41,7 +41,7 @@ const Datepicker: FC<IDatepickerProps> = ({
         name={name}
         required={required}
       />
-    </>
+    </div>
   );
 };
 

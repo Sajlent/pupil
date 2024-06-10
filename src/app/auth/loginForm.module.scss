@@ -1,3 +1,5 @@
+@import "../styles/breakpoints";
+
 .root {
   width: 100%;
   min-height: 100vh;
@@ -6,37 +8,116 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+
+  & h1 {
+    padding-bottom: 2rem;
+  }
 }
 
 .container {
-  max-width: 50%;
-  min-width: 30%;
+  max-width: 996px;
+  width: 88%;
+  height: auto;
   text-align: center;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 4rem;
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid $color-grey;
+  box-shadow: 2px 2px 1px $color-grey;
+  padding: 1rem 2rem;
+
+  &__left_side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    &__description {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1rem 0.3rem;
+    }
+
+    & img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__right_side {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    position: relative;
+    width: 100%;
+
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: $color-teal;
+      width: 4px;
+      height: 70%;
+
+      top: 50%;
+
+      right: -8%;
+      transform: translateY(-50%);
+    }
+  }
 }
 
 .form {
-  position: relative;
-  padding: 2rem;
-  margin: 2rem 0;
-  border: 1px solid $color-grey;
-  border-radius: 1rem;
-  box-shadow: 2px 2px 1px $color-grey;
-  overflow: hidden;
-
   &__legend {
-    font-size: 1.25rem;
+    font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 1rem;
   }
 }
 
-.message {
+.error {
   font-size: 0.875rem;
   font-weight: bold;
-  color: $color-green;
-  margin-top: 1rem;
+  color: $color-red;
+  margin: 1rem 0;
+}
 
-  &--error {
-    color: $color-red;
+@include responsive(mobile) {
+  .root {
+    & h1 {
+      font-size: 1.6rem;
+      padding: 2rem 0;
+    }
+  }
+  .container {
+    flex-direction: column-reverse;
+    gap: 1rem;
+    margin: 4rem 0;
+    padding: 3rem 0.6rem;
+
+    &__left_side {
+      flex-direction: row;
+      & img {
+        width: 80%;
+      }
+    }
+
+    &__right_side {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .form {
+    &__legend {
+      font-size: 1.6rem;
+    }
   }
 }

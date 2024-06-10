@@ -89,8 +89,8 @@ export default function Page({ params }: { params: { uid: string } }) {
           {isCurrentUserProfile && (
             <Link href={`/noticeboard/user/${currentUser.uid}/edit`}>
               <Button
-                variant={ButtonVariants.ICON}
-                icon="pencil"
+                variant={ButtonVariants.IMAGE}
+                image="/images/edit.png"
                 title="Edytuj profil"
                 type={ButtonTypes.BUTTON}
               />

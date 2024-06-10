@@ -1,3 +1,5 @@
+@import "../styles/breakpoints";
+
 .root {
   max-width: 1630px;
   width: 100%;
@@ -5,4 +7,343 @@
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+
+  @include responsive(laptop) {
+    padding: 0 30px;
+  }
+
+  @include responsive(mobileFull) {
+    padding: 0 30px;
+  }
+  .home_page_container {
+    margin: 5rem 0;
+    display: grid;
+    grid-template-columns: 45% 55%;
+    background-color: #fff;
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.123));
+    border-radius: 4px 20px 4px 20px;
+    padding: 6rem 5rem;
+    column-gap: 5rem;
+    position: relative;
+
+    &::before {
+      content: "";
+      background-color: #e0fae4;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      border-radius: 50%;
+      top: 30px;
+      left: 28px;
+      z-index: 2;
+    }
+
+    &::after {
+      content: "";
+      background-color: $color-teal;
+
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: 20px;
+      left: 18px;
+      border-radius: 50%;
+    }
+  }
+
+  .text_container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+
+    & h1 {
+      font-size: 2rem;
+    }
+
+    & article {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+
+  .image_container {
+    width: 100%;
+    & img {
+      width: 100%;
+      padding-right: 5rem;
+      height: auto;
+    }
+
+    &::after {
+      content: "";
+      background-color: $color-teal;
+
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: 20px;
+      right: 18px;
+      border-radius: 50%;
+    }
+
+    &::before {
+      content: "";
+      background-color: #e0fae4;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      border-radius: 50%;
+      top: 30px;
+      right: 28px;
+      z-index: 2;
+    }
+  }
+}
+
+@include responsive(tablet) {
+  .root {
+    .home_page_container {
+      margin: 8rem 0 2rem;
+      padding: 5rem 3rem;
+      grid-template-columns: 1fr;
+      row-gap: 2rem;
+    }
+
+    .text_container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+
+      & h1 {
+        font-size: 2rem;
+      }
+
+      & article {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+    }
+
+    .image_container {
+      width: 100%;
+      & img {
+        width: 100%;
+        padding: 0 6rem;
+        height: auto;
+      }
+    }
+  }
+}
+@include responsive(mobile) {
+  .root {
+    .home_page_container {
+      margin: 7rem 0 4rem;
+      padding: 5rem 2rem 2rem;
+      grid-template-columns: 1fr;
+      row-gap: 2rem;
+
+      &::before {
+        width: 8px;
+        height: 8px;
+        top: 28px;
+        left: 26px;
+      }
+
+      &::after {
+        width: 24px;
+        height: 24px;
+        top: 20px;
+        left: 18px;
+      }
+    }
+
+    .text_container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+
+      & h1 {
+        font-size: 1.2rem;
+      }
+
+      & article {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        & h3 {
+          font-size: 1rem;
+        }
+
+        & p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .image_container {
+      & img {
+        padding: 0.2rem;
+      }
+
+      &::after {
+        width: 24px;
+        height: 24px;
+        top: 20px;
+        right: 18px;
+      }
+
+      &::before {
+        width: 8px;
+        height: 8px;
+        top: 28px;
+        right: 26px;
+      }
+    }
+  }
+}
+
+.loadingWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+}
+
+.loadingSpinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Load page animation
+.screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0fae4;
+  z-index: 1000;
+}
+
+.loader {
+  width: 100px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin: 0 2px;
+  display: inline-block;
+
+  &:first-child {
+    &:before {
+      animation-delay: 0ms;
+    }
+    &:after {
+      animation-delay: 0ms;
+    }
+  }
+
+  &:last-child {
+    &:before {
+      animation-delay: 200ms;
+    }
+    &:after {
+      animation-delay: 200ms;
+    }
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    background-color: blue;
+    animation-name: dotHover;
+    animation-duration: 900ms;
+    animation-timing-function: cubic-bezier(0.82, 0, 0.26, 1);
+    animation-iteration-count: infinite;
+    animation-delay: 100ms;
+    background: #1d261e;
+    border-radius: 100%;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: black;
+    box-shadow: 0px 0px 1px black;
+    opacity: 0.2;
+    width: 100%;
+    height: 3px;
+    left: 0;
+    bottom: -2px;
+    border-radius: 100%;
+    animation-name: dotShadow;
+    animation-duration: 900ms;
+    animation-timing-function: cubic-bezier(0.82, 0, 0.26, 1);
+    animation-iteration-count: infinite;
+    animation-delay: 100ms;
+  }
+}
+
+@keyframes dotShadow {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scaleX(0.6);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes dotHover {
+  0% {
+    top: 0px;
+  }
+  50% {
+    top: -50px;
+    transform: scale(1.1);
+  }
+  100% {
+    top: 0;
+  }
 }

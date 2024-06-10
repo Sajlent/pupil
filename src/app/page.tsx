@@ -23,18 +23,31 @@ export default function Home() {
 
   return (
     <main className={styles.root}>
+      <h1 className={styles.heading}>The best petsitter app!</h1>
       <div className={styles.container}>
-        <Image src="/images/cat.jpg" width={128} height={128} alt="Cat" />
-        <h1 className={styles.heading}>The best petsitter app!</h1>
-        {state.isLoggedIn ? (
-          <>
-            <p>{state.message}</p>
-            <p>
-              Przejdź do <Link href={"/noticeboard"}>Strony głównej</Link>
-            </p>
-          </>
-        ) : (
-          <>
+        <div className={styles.container__left_side}>
+          <Image
+            src="/images/dwa-koty.jpg"
+            width={400}
+            height={320}
+            alt="Cats"
+          />
+          {state.isLoggedIn && (
+            <div className={styles.container__left_side__description}>
+              <p>{state.message}</p>
+              <Link href="/noticeboard/">
+                <Button
+                  type={ButtonTypes.BUTTON}
+                  title="Strona główna"
+                  label="Strona główna"
+                />
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {!state.isLoggedIn && (
+          <div className={styles.container__right_side}>
             <form action={formAction} className={styles.form}>
               <fieldset>
                 <legend className={styles.form__legend}>Logowanie</legend>
@@ -67,7 +80,7 @@ export default function Home() {
               <br />
               <Link href={"/auth"}>Zarejestruj się!</Link>
             </p>
-          </>
+          </div>
         )}
       </div>
     </main>

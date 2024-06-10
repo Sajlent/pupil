@@ -3,6 +3,7 @@ export enum ButtonVariants {
   SECONDARY = "secondary",
   TERTIARY = "tertiary",
   ICON = "icon",
+  IMAGE = "image",
 }
 
 export enum ButtonTypes {

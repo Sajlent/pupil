@@ -46,11 +46,11 @@ const Message: FC<IMessageProps> = ({
 
   return (
     <article className={styles.root}>
-      <div>
+      <div className={styles.message__box}>
         {noticeTitle && (
           <>
             <h2>Odpowiedź na ogłoszenie</h2>
-            <p role="doc-subtitle">{noticeTitle}</p>
+            <p role="doc-subtitle">Temat: {noticeTitle}</p>
           </>
         )}
         {messageType === MessageType.RECEIVED && (
@@ -65,7 +65,7 @@ const Message: FC<IMessageProps> = ({
             )}
           </p>
         )}
-        <p>{message}</p>
+        <p>Wiadomość: {message}</p>
       </div>
       <div className={styles.actions}>
         {/* TODO: cleanup this ternary hell */}

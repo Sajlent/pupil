@@ -1,67 +1,185 @@
+@import "../../styles/breakpoints";
+
 .root {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 4rem;
-  max-width: 75%;
-  margin: 2rem auto;
-}
 
-.header {
-  grid-column: 1 / -1;
+  margin: 2rem auto;
+
+  border-radius: 20px;
+
+  @include responsive(tablet) {
+    margin-top: 7rem;
+  }
+  @include responsive(mobile) {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    padding: 0.3rem;
+    margin-top: 8rem;
+  }
 }
 
 .aside {
-  max-width: 50%;
-  margin: 2rem 0;
-}
+  max-width: 100%;
+  display: flex;
+  margin: 0.4rem 0;
+  justify-content: space-between;
+  align-items: flex-end;
 
-.notice {
-  padding: 1rem;
-  margin: 2rem 0;
-  border: 1px solid $color-grey;
-  border-radius: 1rem;
-
-  &__description {
-    font-size: 0.875rem;
-  }
-
-  &__info {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
-  }
-
-  &__detail {
-    display: flex;
+  @include responsive(mobileFull) {
     align-items: center;
-    background-color: black;
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: 1px solid;
-    border-radius: 1rem;
+    flex-direction: column-reverse;
+    gap: 2.4rem;
+    max-width: 100%;
+  }
 
-    > i {
+  .noticeCount {
+    font-size: 1.2rem;
+
+    @include responsive(tablet) {
       font-size: 1rem;
-      margin-right: 0.5rem;
+    }
+    @include responsive(mobile) {
+      font-size: 0.9rem;
     }
   }
+}
+.notices__section {
+  width: 100%;
+  & h1 {
+    display: block;
+    text-align: center;
+    margin: 3rem 0;
+    font-size: 2rem;
 
-  &__actions {
-    text-align: right;
-    margin: 1rem 0 0;
+    @include responsive(mobile) {
+      font-size: 1.6rem;
+    }
   }
-}
+  .notices__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 3rem;
 
-.heading {
-  margin: 2rem 0 1.5rem;
-}
+    @include responsive(mobileFull) {
+      grid-template-columns: 1fr;
+    }
+    .notice {
+      padding: 3rem 2.8rem;
+      margin: 2rem 0;
+      border-radius: 10px;
+      background-color: #fff;
 
-.form {
-  position: relative;
+      position: relative;
 
-  &__fieldset {
-    margin: 2rem 0;
+      @include responsive(mobile) {
+        padding: 3rem 1.6rem;
+        text-align: center;
+      }
+
+      &::after,
+      &::before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: $color-grey;
+        position: absolute;
+        z-index: -1;
+        border-radius: 14px;
+      }
+      &::before {
+        top: -16px;
+        left: -16px;
+      }
+
+      &::after {
+        bottom: -16px;
+        right: -16px;
+      }
+
+      &__icon {
+        padding-right: 0.6rem;
+        width: auto;
+
+        @include responsive(mobile) {
+          width: 26px;
+          height: auto;
+        }
+      }
+
+      &__description {
+        font-size: 1rem;
+        @include responsive(laptop) {
+          font-size: 0.8rem;
+        }
+        @include responsive(mobileFull) {
+          font-size: 0.8rem;
+        }
+      }
+
+      & h2 {
+        font-size: 1.2rem;
+
+        @include responsive(laptop) {
+          font-size: 1rem;
+        }
+        @include responsive(tablet) {
+          font-size: 1.4rem;
+        }
+      }
+
+      &__info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0;
+
+        @include responsive(mobile) {
+          justify-content: center;
+        }
+      }
+
+      &__detail {
+        display: flex;
+        align-items: center;
+        background-color: $color-teal;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        border: 1px solid;
+        border-radius: 1rem;
+        @include responsive(mobile) {
+          justify-content: center;
+          font-size: 0.6rem;
+        }
+        > i {
+          font-size: 1rem;
+          margin-right: 0.5rem;
+        }
+      }
+
+      &__actions {
+        text-align: right;
+        margin: 1rem 0 0;
+
+        @include responsive(mobile) {
+          text-align: center;
+        }
+      }
+    }
+
+    // .heading {
+    //   margin: 2rem 0 1.5rem;
+    // }
+
+    // .form {
+    //   position: relative;
+
+    //   &__fieldset {
+    //     margin: 2rem 0;
+    //   }
+    // }
   }
 }
