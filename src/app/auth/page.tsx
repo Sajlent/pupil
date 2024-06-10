@@ -79,6 +79,7 @@ export default function Page() {
               name="type"
               fields={userTypesSchema}
               legend="Wybierz rodzaj użytkownika:"
+              required
             />
             <Button
               type={ButtonTypes.SUBMIT}
