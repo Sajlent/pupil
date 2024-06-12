@@ -1,0 +1,98 @@
+@import "../../../styles/breakpoints";
+.root {
+  display: flex;
+  margin: 2rem auto;
+  align-items: center;
+  gap: 5rem;
+
+  @include responsive(mobileFull) {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @include responsive(mobileFull) {
+    margin-top: 7rem;
+    gap: 2rem;
+  }
+}
+
+.leftPanel {
+  background-color: #fff;
+  padding: 4rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+  border: 4px solid $color-grey;
+  border-radius: 20px;
+
+  width: 100%;
+  position: relative;
+
+  @include responsive(mobile) {
+    padding: 3rem 2rem;
+  }
+  & img {
+    width: 100%;
+    height: auto;
+  }
+
+  & h1 {
+    @include responsive(mobile) {
+      font-size: 1.3rem;
+    }
+  }
+
+  & p {
+    font-size: 0.9rem;
+
+    @include responsive(laptop) {
+      font-size: 0.8rem;
+    }
+
+    @include responsive(mobile) {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.rightPanel {
+  background-color: #fff;
+  padding: 3rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+  border: 4px solid $color-grey;
+  border-radius: 20px;
+
+  width: 100%;
+
+  @include responsive(laptop) {
+    padding: 3rem;
+  }
+
+  @include responsive(mobile) {
+    padding: 3rem 2rem;
+  }
+  .form {
+    width: 100%;
+
+    &__fieldset {
+      margin-top: 1rem;
+    }
+  }
+}
+.date__box {
+  display: flex;
+  gap: 2rem;
+
+  @include responsive(mobile) {
+    flex-direction: column;
+  }
+}
+.error {
+  color: $color-red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}

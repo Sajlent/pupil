@@ -46,7 +46,7 @@ const Filters: FC<IFiltersProps> = ({ config }) => {
   }
 
   return (
-    <form ref={filtersRef}>
+    <form className={styles.form} ref={filtersRef}>
       <h3>Wyszukaj</h3>
       {config.map((filter) => (
         <div className={styles.filter} key={filter.id}>

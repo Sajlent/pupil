@@ -1,61 +1,268 @@
+@import "../../styles/breakpoints";
+
 .root {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 4rem;
-  max-width: 75%;
+
   margin: 2rem auto;
+
+  border-radius: 20px;
+
+  @include responsive(tablet) {
+    margin-top: 7rem;
+  }
+  @include responsive(mobile) {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    padding: 0.3rem;
+    margin-top: 8rem;
+  }
 }
 
-.header {
-  grid-column: 1 / -1;
-}
-
-.aside {
-  max-width: 50%;
-  margin: 2rem 0;
-}
-
-.petsitter {
+.hero {
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  padding: 1rem;
-  margin: 2rem 0;
-  border: 1px solid $color-grey;
-  border-radius: 1rem;
+  grid-template-columns: 40% 60%;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  padding: 3rem 5rem;
+  border-radius: 20px;
+  justify-items: center;
+  align-items: center;
+  column-gap: 2rem;
+  position: relative;
 
-  &__photo {
-    border-radius: 1rem;
+  @include responsive(mobile) {
+    grid-template-columns: 1fr;
+    row-gap: 2rem;
+    padding: 4rem 2rem;
   }
 
-  &__summary {
-    position: relative;
-    font-size: 0.875rem;
-    margin: 0.5rem 0;
+  &::after,
+  &::before {
+    content: "";
+    background-color: $color-teal;
+
+    position: absolute;
+    width: 100px;
+    height: 100px;
   }
+  &::after {
+    bottom: -1.5%;
+    right: -0.5%;
+    z-index: -1;
+    border-radius: 0 0 26px 0;
 
-  &__city {
-    position: relative;
-    font-size: 0.875rem;
-    color: $color-dark-grey;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding-left: 1.5rem;
-
-    & > i {
-      font-size: 1.25rem;
-      position: absolute;
-      left: 0;
-      top: -1px;
+    @include responsive(mobile) {
+      bottom: -1%;
+      right: -1.6%;
     }
   }
 
-  &__link {
+  &::before {
+    top: -1.5%;
+    left: -0.5%;
+    border-radius: 26px 0 0 0;
+    z-index: -1;
+    @include responsive(mobile) {
+      top: -1%;
+      left: -1.6%;
+    }
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+    @include responsive(laptop) {
+      font-size: 0.9rem;
+    }
+    @include responsive(tablet) {
+      font-size: 0.8rem;
+    }
+    @include responsive(mobile) {
+      font-size: 0.64rem;
+    }
+  }
+  & h1 {
+    font-size: 2rem;
+    @include responsive(tablet) {
+      font-size: 1.7rem;
+    }
+    @include responsive(mobile) {
+      font-size: 1.4rem;
+    }
+  }
+
+  & a {
+    width: auto;
+  }
+  & img {
+    max-width: 580px;
+    width: 60%;
+    height: auto;
+    text-align: center;
+    @include responsive(laptop) {
+      width: 50%;
+    }
+    @include responsive(mobileFull) {
+      width: 88%;
+    }
+  }
+}
+
+.aside {
+  max-width: 100%;
+  display: flex;
+  margin: 0.4rem 0;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @include responsive(mobileFull) {
+    align-items: center;
+    flex-direction: column-reverse;
+    gap: 2.4rem;
+    max-width: 100%;
+  }
+
+  .petsitterCount {
+    font-size: 1.2rem;
+
+    @include responsive(tablet) {
+      font-size: 1rem;
+    }
+    @include responsive(mobile) {
+      font-size: 0.9rem;
+    }
+  }
+}
+.petsitter__section {
+  width: 100%;
+  & h1 {
     display: block;
-    float: right;
-    font-size: 0.875rem;
-    font-weight: bold;
-    color: $color-dark-teal;
-    text-align: right;
-    text-decoration: none;
+    text-align: center;
+    margin: 3rem 0;
+    font-size: 2rem;
+
+    @include responsive(mobile) {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.petsitter__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 3rem;
+
+  @include responsive(mobileFull) {
+    grid-template-columns: 1fr;
+  }
+
+  .petsitter {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 2rem;
+    margin: 2rem 0;
+
+    border-radius: 1rem;
+    position: relative;
+    padding: 2rem 3rem;
+    margin: 2rem 0;
+    border-radius: 10px;
+    background-color: #fff;
+
+    @include responsive(laptop) {
+      adding: 2rem 1rem;
+    }
+
+    @include responsive(mobile) {
+      grid-template-columns: 1fr;
+      place-items: center;
+    }
+
+    &::after,
+    &::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      background-color: $color-grey;
+      position: absolute;
+      z-index: -1;
+      border-radius: 14px;
+    }
+    &::before {
+      top: -16px;
+      left: -16px;
+    }
+
+    &::after {
+      bottom: -16px;
+      right: -16px;
+    }
+    &__photo {
+      border-radius: 1rem;
+
+      @include responsive(laptop) {
+        width: 148px;
+        height: auto;
+      }
+    }
+
+    .petsitter__info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @include responsive(mobile) {
+        align-items: center;
+      }
+
+      &__summary {
+        position: relative;
+        font-size: 0.875rem;
+        margin: 0.5rem 0;
+        @include responsive(mobile) {
+          text-align: center;
+          margin-bottom: 10px;
+        }
+      }
+
+      &__city {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background-color: $color-teal;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        border: 1px solid;
+        border-radius: 1rem;
+
+        &__icon {
+          padding-right: 0.6rem;
+          width: auto;
+        }
+      }
+
+      &__link {
+        display: block;
+        float: right;
+        font-size: 0.875rem;
+        font-weight: bold;
+        color: $color-dark-teal;
+        text-align: right;
+        text-decoration: none;
+        margin-left: auto;
+        @include responsive(mobile) {
+          margin-top: 10px;
+          margin-left: 0;
+        }
+      }
+    }
   }
 }

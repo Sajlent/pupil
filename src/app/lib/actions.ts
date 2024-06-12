@@ -343,19 +343,19 @@ export async function getNoticesList(
 
   if (cityFilter) constraints.push(where("city", "==", cityFilter));
 
-  if (animalFilter)
-    constraints.push(where("animals", "array-contains", animalFilter));
+  if (animalFilter) constraints.push(where("animal", "==", animalFilter));
 
   if (onlyNotAccepted) {
     constraints.push(where("status", "==", "notaccepted"));
   } else {
-    constraints.push(where("status", "!=", "notaccepted"));
+    constraints.push(where("status", "==", "approved"));
   }
 
   const q = query(collection(db, "notices"), ...constraints);
 
   try {
     const querySnapshot = await getDocs(q);
+
     querySnapshot.forEach((doc) => {
       const noticesData = doc.data() as INoticeData;
 

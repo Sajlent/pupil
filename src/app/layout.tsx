@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Providers } from "@/app/providers";
 import Toast from "@/app/ui/toast/toast";
 import "./globals.scss";
 
-const defaultFont = Open_Sans({ subsets: ["latin"] });
+const defaultFont = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: "Pupil App",

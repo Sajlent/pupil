@@ -1,26 +1,64 @@
+@import "../../../styles/breakpoints";
+
 .select {
   display: block;
   width: 100%;
-  padding: 1rem 0.5rem;
-  border: 1px solid $color-grey;
+  padding: 1rem 0.6rem;
+  border: 1px solid #ddd;
   border-radius: 0.25rem;
+  font-size: 0.8rem;
+
+  @include responsive(mobile) {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
 
   &--multiple {
-    max-width: 300px;
+    max-width: 100%;
     min-height: 100px;
     font-size: 0.875rem;
+    padding: 0;
   }
 }
 
 .option {
   padding: 0.5rem;
+  color: $color-dark-grey;
+  height: auto;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+
+  &::before {
+    content: "\2610";
+    width: 1.3em;
+    text-align: center;
+    display: inline-block;
+  }
+
+  &:checked::before {
+    content: "\2611";
+  }
+  &:checked,
+  &:focus,
+  &:hover {
+    background-color: $color-teal;
+    color: #fff;
+  }
 }
 
 .label {
   display: block;
   font-size: 0.875rem;
-  color: $color-dark-grey;
+  color: #9e9e9e;
   text-align: left;
-  text-transform: uppercase;
+
   letter-spacing: 1px;
+
+  &:hover {
+    background-color: $color-teal;
+    color: #fff;
+  }
+
+  @include responsive(mobile) {
+    font-size: 0.7rem;
+  }
 }

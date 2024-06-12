@@ -1,13 +1,11 @@
 "use client";
 
-import { FC, ReactElement, useCallback, useEffect } from "react";
+import { FC } from "react";
 
-import { useAuthContext, useModalContext } from "@/app/providers";
+import { useAuthContext } from "@/app/providers";
 import { ButtonTypes } from "@/app/types/Forms";
 import Button from "@/app/ui/forms/button/button";
-import SendMessageForm from "@/app/ui/noticeboard/sendMessageForm/sendMessageForm";
 import { UserType } from "@/app/types/User";
-import { acceptNotice } from "@/app/lib/actions";
 
 interface IadminAcceptNoticeButtonProps {
   noticeId: string;
@@ -16,23 +14,23 @@ interface IadminAcceptNoticeButtonProps {
   handleClick: any;
 }
 
-const adminAcceptNoticeButton: FC<IadminAcceptNoticeButtonProps> = ({
+const AdminAcceptNoticeButton: FC<IadminAcceptNoticeButtonProps> = ({
   noticeId,
-  handleClick
+  handleClick,
 }) => {
   const { currentUser } = useAuthContext();
-  const { type: userType, offerHistory } = currentUser || {};
-  
+  const { type: userType } = currentUser || {};
+
   if (userType !== UserType.ADMIN) return null;
- 
+
   return (
     <Button
       type={ButtonTypes.BUTTON}
       title="Akceptuj"
       label="Akceptuj"
-      onClick={() =>handleClick(noticeId)}
+      onClick={() => handleClick(noticeId)}
     />
   );
 };
 
-export default adminAcceptNoticeButton;
+export default AdminAcceptNoticeButton;

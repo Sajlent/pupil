@@ -24,10 +24,7 @@ const Input: FC<IInputProps> = ({
   type,
 }) => {
   return (
-    <>
-      <label className={styles.label} htmlFor={id}>
-        {label}
-      </label>
+    <div className={styles.form_input_box}>
       {type === "textarea" ? (
         <textarea
           className={styles.input}
@@ -50,7 +47,10 @@ const Input: FC<IInputProps> = ({
           minLength={minLength}
         />
       )}
-    </>
+      <label className={styles.label} htmlFor={id}>
+        {label}
+      </label>
+    </div>
   );
 };
 
