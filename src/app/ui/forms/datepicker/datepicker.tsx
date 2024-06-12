@@ -11,6 +11,8 @@ interface IDatepickerProps {
   min?: string;
   max?: string;
   required?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 // const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -28,6 +30,8 @@ const Datepicker: FC<IDatepickerProps> = ({
   label,
   name,
   required = false,
+  value,
+  onChange,
 }) => {
   return (
     <div className={styles.date__container}>
@@ -40,6 +44,8 @@ const Datepicker: FC<IDatepickerProps> = ({
         id={id}
         name={name}
         required={required}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
