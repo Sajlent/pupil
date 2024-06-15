@@ -22,6 +22,7 @@ export interface IMessageData extends IMessageBaseMeta {
   id: string;
   noticeTitle?: string;
   message: string;
+  receiverEmail: string;
   status: MessageStatus;
 }
 

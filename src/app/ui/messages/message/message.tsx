@@ -33,7 +33,7 @@ const Message: FC<IMessageProps> = ({
   const {
     authorId,
     authorDisplayName,
-    authorEmail,
+    receiverEmail,
     id,
     noticeTitle,
     message,
@@ -71,7 +71,7 @@ const Message: FC<IMessageProps> = ({
         {/* TODO: cleanup this ternary hell */}
         {status === MessageStatus.ACCEPTED ? (
           <p>
-            {getAcceptedOfferText(currentUser.type, messageType, authorEmail)}
+            {getAcceptedOfferText(currentUser.type, messageType, receiverEmail)}
           </p>
         ) : messageType === MessageType.SENT ? (
           <p>Oferta oczekuje na akceptację.</p>
