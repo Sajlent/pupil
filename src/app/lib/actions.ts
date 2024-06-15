@@ -439,6 +439,8 @@ export async function getMessages(uid: string) {
 
       const { displayName: authorDisplayName, email: authorEmail } =
         (await getUserContactInfo(authorId)) || {};
+      const { email: receiverEmail } =
+        (await getUserContactInfo(receiverId)) || {};
       const noticeTitle = noticeId && (await getNoticeTitle(noticeId));
 
       if (receiverId === uid) {
@@ -448,6 +450,7 @@ export async function getMessages(uid: string) {
           authorEmail,
           id: doc.id,
           noticeTitle,
+          receiverEmail,
         } as IMessageData);
       } else if (authorId === uid) {
         data.sent.push({
@@ -456,6 +459,7 @@ export async function getMessages(uid: string) {
           authorEmail,
           id: doc.id,
           noticeTitle,
+          receiverEmail,
         } as IMessageData);
       }
     }
