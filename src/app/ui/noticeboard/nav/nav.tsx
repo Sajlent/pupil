@@ -53,7 +53,9 @@ export default function Nav() {
       >
         <ul className={styles.nav__list}>
           <li className={styles.logo}>
-            <Image src={Logo} width={150} height={82} alt="Logo Pupil" />
+            <Link href={`/noticeboard/`}>
+              <Image src={Logo} width={150} height={82} alt="Logo Pupil" />
+            </Link>
           </li>
           {navLinks.map((link) => (
             <li
@@ -114,7 +116,9 @@ export default function Nav() {
         </ul>
         <div className={styles.hamburger_menu}>
           <div>
-            <Image src={Logo} width={76} height={50} alt="Logo Pupil" />
+            <Link href={`/noticeboard/`}>
+              <Image src={Logo} width={76} height={50} alt="Logo Pupil" />
+            </Link>
           </div>
           <div className={styles.bar_container} onClick={toggleMobileMenu}>
             <div className={styles.bar}></div>

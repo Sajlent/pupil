@@ -129,3 +129,31 @@
     }
   }
 }
+
+// 404 Page
+
+.notFound_container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  @include responsive(mobile) {
+    gap: 0.8rem;
+  }
+  & img {
+    width: 40%;
+    height: auto;
+    @include responsive(mobile) {
+      width: 50%;
+    }
+  }
+  & h1 {
+    font-size: 1.6rem;
+
+    @include responsive(mobile) {
+      font-size: 1rem;
+    }
+  }
+}
