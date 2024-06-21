@@ -65,11 +65,17 @@
   align-items: flex-start;
   border: 4px solid $color-grey;
   border-radius: 20px;
+  margin-right: 3rem;
 
   width: 100%;
 
   @include responsive(laptop) {
     padding: 3rem;
+    margin-right: 2rem;
+  }
+
+  @include responsive(mobileFull) {
+    margin-right: 0;
   }
 
   @include responsive(mobile) {
@@ -84,15 +90,20 @@
   }
 }
 .date__box {
-  display: flex;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
 
   @include responsive(mobile) {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 10px;
   }
 }
 .error {
   color: $color-red;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  grid-column: 1/-1;
 }

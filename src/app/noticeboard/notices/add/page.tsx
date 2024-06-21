@@ -51,7 +51,9 @@ export default function Page() {
       setEndDate(newEndDate);
       setEndDateError(""); // Clear error message
     } else {
-      setEndDateError("Data zakończenia nie może być wcześniejsza niż data rozpoczęcia");
+      setEndDateError(
+        "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia"
+      );
     }
   };
 

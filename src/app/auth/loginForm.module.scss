@@ -16,8 +16,8 @@
 
 .container {
   max-width: 996px;
-  width: 88%;
-  height: auto;
+  width: auto;
+
   text-align: center;
   display: flex;
   flex-direction: row-reverse;
@@ -120,4 +120,10 @@
       font-size: 1.6rem;
     }
   }
+}
+.error {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: $color-red;
+  margin: 1rem 0;
 }

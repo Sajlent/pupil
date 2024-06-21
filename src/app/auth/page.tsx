@@ -102,11 +102,7 @@ export default function Page() {
                 disabled={pending}
               />
               <Loader />
-              <p
-                aria-live="polite"
-                role="status"
-                className={`${styles.message} ${state.error ? styles["message--error"] : ""}`}
-              >
+              <p aria-live="polite" role="status" className={styles.error}>
                 {state.message}
               </p>
             </form>
